@@ -10,6 +10,7 @@
  * NUMBER: 13
  * DESCRIPTION: Nullability condition, if, type parameters
  * NOTE: lazy smartcasts
+ * HELPERS: generics, interfaces
  */
 
 // TESTCASE NUMBER: 1
@@ -51,113 +52,105 @@ fun <T> case_4(x: T?) {
 }
 
 // TESTCASE NUMBER: 5
-interface A5 { fun test() }
-
 fun <T> case_5(x: T?) {
-    if (x is A5) {
+    if (x is _Interface1) {
         if (<!SENSELESS_COMPARISON!>x != null<!>) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A5 & T!! & T?")!>x<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A5"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A5"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T? & _Interface1")!>x<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A5"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A5"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
             x.apply {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>this<!>
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>this<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>
                 equals(this)
-                test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>this<!>.equals(x)
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>this<!>.test()
+                itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>.equals(x)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>.itest()
             }
             x.also {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>it<!>
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>it<!>
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>it<!>.test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & T?!!}")!>it<!>.equals(it)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>.itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>.equals(it)
             }
         }
     }
 }
 
 // TESTCASE NUMBER: 6
-interface A6 { fun test() }
-
 fun <T> case_6(x: T?) {
-    if (x is A6?) {
+    if (x is _Interface1?) {
         if (x != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A6 & T!! & T?")!>x<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A6"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A6"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T? & _Interface1")!>x<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
             <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
             x.apply {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}")!>this<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>
                 equals(this)
-                test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}")!>this<!>.equals(x)
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}")!>this<!>.test()
+                itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>.equals(x)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>.itest()
             }
             x.also {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}")!>it<!>
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}")!>it<!>.test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & T?!!}")!>it<!>.equals(it)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>.itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>.equals(it)
             }
         }
     }
 }
 
 // TESTCASE NUMBER: 7
-interface A7 { fun test() }
-
 fun <T> case_7(y: T) {
     val x = y
-    if (x is A7?) {
+    if (x is _Interface1?) {
         if (x != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A7 & T & T!!")!>x<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T & A7"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T & A7"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T & T!! & _Interface1")!>x<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("T & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
             x.apply {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}")!>this<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>this<!>
                 equals(this)
-                test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}")!>this<!>.equals(x)
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}")!>this<!>.test()
+                itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>this<!>.equals(x)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>this<!>.itest()
             }
             x.also {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}")!>it<!>
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}")!>it<!>.test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & T!!}")!>it<!>.equals(it)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>it<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>it<!>.itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>it<!>.equals(it)
             }
         }
     }
 }
 
 // TESTCASE NUMBER: 8
-interface A8 { fun test() }
-
 fun <T> case_8(x: T) {
     if (x != null) {
-        if (x is A8?) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A8 & T & T!!")!>x<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T & A8"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T & A8"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        if (x is _Interface1?) {
+            <!DEBUG_INFO_EXPRESSION_TYPE("T & T!! & _Interface1")!>x<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("T & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
             <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
             x.apply {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}")!>this<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>this<!>
                 equals(this)
-                test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}")!>this<!>.equals(x)
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}")!>this<!>.test()
+                itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>this<!>.equals(x)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>this<!>.itest()
             }
             x.also {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}")!>it<!>
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}")!>it<!>.test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A8 & T!!}")!>it<!>.equals(it)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>it<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>it<!>.itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T!! & _Interface1}")!>it<!>.equals(it)
             }
         }
     }
@@ -212,55 +205,51 @@ fun <T : Number?> case_10(x: T) {
 }
 
 // TESTCASE NUMBER: 11
-interface A11 { fun test() }
-
 fun <T : Number> case_11(x: T?) {
-    if (x is A11?) {
+    if (x is _Interface1?) {
         if (x != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A11 & T!! & T?")!>x<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A11"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T? & A11"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T? & _Interface1")!>x<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T? & _Interface1"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
             <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-            <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+            <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
             x.apply {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}")!>this<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>
                 equals(this)
-                test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}")!>this<!>.equals(x)
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}"), DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}")!>this<!>.test()
+                itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>.equals(x)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}"), DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>this<!>.itest()
             }
             x.also {
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}")!>it<!>
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}")!>it<!>.test()
-                <!DEBUG_INFO_EXPRESSION_TYPE("{A11 & T?!!}")!>it<!>.equals(it)
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>.itest()
+                <!DEBUG_INFO_EXPRESSION_TYPE("{T?!! & _Interface1}")!>it<!>.equals(it)
             }
         }
     }
 }
 
 // TESTCASE NUMBER: 12
-interface A12 { fun test() }
-
-fun <T> case_12(x: T) where T : Number?, T: A12? {
+fun <T> case_12(x: T) where T : Number?, T: _Interface1? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.toByte()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test()
+            itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
         }
     }
@@ -335,26 +324,24 @@ fun <T: List<*>?> case_14(x: T) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A15<T1, T2, T3, T4, T5, T6, T7> { fun test() }
-
-fun <T: A15<*, *, *, *, *, *, *>?> case_15(x: T) {
+fun <T: _InterfaceWithFiveTypeParameters1<*, *, *, *, *>?> case_15(x: T) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test<!>()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
         }
     }
@@ -366,26 +353,24 @@ fun <T: A15<*, *, *, *, *, *, *>?> case_15(x: T) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A16<T> { fun test() }
-
-fun <T: A16<out T>?> case_16(x: T) {
+fun <T: _InterfaceWithTypeParameter1<out T>?> case_16(x: T) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test<!>()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
         }
     }
@@ -397,26 +382,24 @@ fun <T: A16<out T>?> case_16(x: T) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A17<T> { fun test() }
-
-fun <T: A17<in T>?> case_17(x: T) {
+fun <T: _InterfaceWithTypeParameter1<in T>?> case_17(x: T) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test<!>()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
         }
     }
@@ -428,28 +411,26 @@ fun <T: A17<in T>?> case_17(x: T) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A18<T> { fun test() }
-
-fun <T: A18<in T>?> case_18(x: T) {
+fun <T: _InterfaceWithTypeParameter1<in T>?> case_18(x: T) {
     val y = x
 
     if (y != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>y<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>y<!>.equals(y)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>y<!><!UNSAFE_CALL!>.<!>test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>y<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(y)
-        x<!UNSAFE_CALL!>.<!>test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test<!>()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(y)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
         }
     }
@@ -461,26 +442,24 @@ fun <T: A18<in T>?> case_18(x: T) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A19<T> { fun test() }
-
-fun <T: A19<out T>?> case_19(x: T) {
+fun <T: _InterfaceWithTypeParameter1<out T>?> case_19(x: T) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test<!>()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
         }
     }
@@ -492,33 +471,30 @@ fun <T: A19<out T>?> case_19(x: T) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A20_1<T> { fun test1() }
-interface A20_2<T> { fun test2() }
-
-fun <T> case_20(x: T) where T: A20_1<in T>?, T: A20_2<out T>? {
+fun <T> case_20(x: T) where T: _InterfaceWithTypeParameter1<in T>?, T: _InterfaceWithTypeParameter2<out T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest1()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest2()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test1()
-        x<!UNSAFE_CALL!>.<!>test2()
+        x<!UNSAFE_CALL!>.<!>itest1()
+        x<!UNSAFE_CALL!>.<!>itest2()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test1<!>()
-            <!UNSAFE_CALL!>test2<!>()
+            <!UNSAFE_CALL!>itest1<!>()
+            <!UNSAFE_CALL!>itest2<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest2()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest2()
         }
     }
 }
@@ -529,39 +505,35 @@ fun <T> case_20(x: T) where T: A20_1<in T>?, T: A20_2<out T>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A21_1<T> { fun test1() }
-interface A21_2<T> { fun test2() }
-interface A21_3<T> { fun test3() }
-
-fun <T> case_21(x: T) where T: A21_1<in T>?, T: A21_2<out T>?, T: A21_3<T>? {
+fun <T> case_21(x: T) where T: _InterfaceWithTypeParameter1<in T>?, T: _InterfaceWithTypeParameter2<out T>?, T: _InterfaceWithTypeParameter3<T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test2()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test3()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest1()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest3()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test1()
-        x<!UNSAFE_CALL!>.<!>test2()
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test3()
+        x<!UNSAFE_CALL!>.<!>itest1()
+        x<!UNSAFE_CALL!>.<!>itest2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest3()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test1<!>()
-            <!UNSAFE_CALL!>test2<!>()
-            test3()
+            <!UNSAFE_CALL!>itest1<!>()
+            <!UNSAFE_CALL!>itest2<!>()
+            itest3()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test3()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest3()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test3()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest3()
         }
     }
 }
@@ -571,263 +543,243 @@ fun <T> case_21(x: T) where T: A21_1<in T>?, T: A21_2<out T>?, T: A21_3<T>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A22<T> { fun test() }
-
-fun <T: A22<A22<out T>>?> case_22(x: T) {
+fun <T: _InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<out T>>?> case_22(x: T) {
     var y = x
 
     if (y != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>y<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>y<!>.equals(y)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>y<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>y<!>.itest()
 
         x<!UNSAFE_CALL!>.<!>equals(y)
-        x<!UNSAFE_CALL!>.<!>test()
+        x<!UNSAFE_CALL!>.<!>itest()
         x.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T"), DEBUG_INFO_EXPRESSION_TYPE("T")!>this<!>
             <!UNSAFE_CALL!>equals<!>(this)
-            <!UNSAFE_CALL!>test<!>()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T"), DEBUG_INFO_EXPRESSION_TYPE("T")!>this<!><!UNSAFE_CALL!>.<!>equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T"), DEBUG_INFO_EXPRESSION_TYPE("T")!>this<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T"), DEBUG_INFO_EXPRESSION_TYPE("T")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         x.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T")!>it<!><!UNSAFE_CALL!>.<!>equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T")!>it<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 23
-interface A23<T> { fun test() }
-
-fun <T: A23<A23<out T>>?> case_23(x: T) {
+fun <T: _InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<out T>>?> case_23(x: T) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test()
+            itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 24
-interface A24<T> { fun test() }
-
-fun <T : A24<in T>> case_24(x: A24<T>?) {
+fun <T : _InterfaceWithTypeParameter1<in T>> case_24(x: _InterfaceWithTypeParameter1<T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A24<T> & A24<T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>? & A24<T>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>? & A24<T>"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T> & _InterfaceWithTypeParameter1<T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>? & _InterfaceWithTypeParameter1<T>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>? & _InterfaceWithTypeParameter1<T>"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>"), DEBUG_INFO_EXPRESSION_TYPE("A24<T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>"), DEBUG_INFO_EXPRESSION_TYPE("A24<T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>"), DEBUG_INFO_EXPRESSION_TYPE("A24<T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>this<!>.itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A24<T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 25
-interface A25<T> { fun test() }
-
-fun <T : A25<out T>> case_25(x: A25<T>?) {
+fun <T : _InterfaceWithTypeParameter1<out T>> case_25(x: _InterfaceWithTypeParameter1<T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A25<T> & A25<T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>? & A25<T>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>? & A25<T>"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T> & _InterfaceWithTypeParameter1<T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>? & _InterfaceWithTypeParameter1<T>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>? & _InterfaceWithTypeParameter1<T>"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>"), DEBUG_INFO_EXPRESSION_TYPE("A25<T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>"), DEBUG_INFO_EXPRESSION_TYPE("A25<T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>"), DEBUG_INFO_EXPRESSION_TYPE("A25<T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>this<!>.itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A25<T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 26
-interface A26<T> { fun test() }
-
-fun <T : A26<T>> case_26(x: A26<in T>?) {
+fun <T : _InterfaceWithTypeParameter1<T>> case_26(x: _InterfaceWithTypeParameter1<in T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T> & A26<in T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T> & A26<in T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T> & A26<in T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A26<in T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A26<in T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A26<in T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A26<in T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 27
-interface A27<T> { fun test() }
-
-fun <T : A27<T>> case_27(x: A27<out T>?) {
+fun <T : _InterfaceWithTypeParameter1<T>> case_27(x: _InterfaceWithTypeParameter1<out T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T> & A27<out T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T> & A27<out T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T> & A27<out T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A27<out T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A27<out T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A27<out T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A27<out T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 28
-interface A28<T> { fun test() }
-
-fun <T : A28<in T>> case_28(x: A28<out T>?) {
+fun <T : _InterfaceWithTypeParameter1<in T>> case_28(x: _InterfaceWithTypeParameter1<out T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T> & A28<out T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T> & A28<out T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T> & A28<out T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A28<out T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A28<out T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A28<out T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A28<out T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 29
-interface A29<T> { fun test() }
-
-fun <T : A29<out T>> case_29(x: A29<in T>?) {
+fun <T : _InterfaceWithTypeParameter1<out T>> case_29(x: _InterfaceWithTypeParameter1<in T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T> & A29<in T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T> & A29<in T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T> & A29<in T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A29<in T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A29<in T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A29<in T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A29<in T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 30
-interface A30<T> { fun test() }
-
-fun <T : A30<in T>> case_30(x: A30<in T>?) {
+fun <T : _InterfaceWithTypeParameter1<in T>> case_30(x: _InterfaceWithTypeParameter1<in T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T> & A30<in T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T> & A30<in T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T> & A30<in T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A30<in T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A30<in T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A30<in T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A30<in T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 31
-interface A31<T> { fun test() }
-
-fun <T : A31<out T>> case_31(x: A31<out T>?) {
+fun <T : _InterfaceWithTypeParameter1<out T>> case_31(x: _InterfaceWithTypeParameter1<out T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T> & A31<out T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T> & A31<out T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T> & A31<out T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A31<out T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A31<out T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A31<out T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A31<out T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.itest()
         }
     }
 }
@@ -857,105 +809,97 @@ fun <T> case_32(x: Map<T, *>?) {
 }
 
 // TESTCASE NUMBER: 33
-interface A33<T1, T2, T3, T4, T5, T6, T7> { fun test() }
-
-fun <T> case_33(x: A33<T, *, T, *, T, *, T>?) {
+fun <T> case_33(x: _InterfaceWithFiveTypeParameters1<T, *, T, *, T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, *, T, *, T, *, T> & A33<T, *, T, *, T, *, T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, *, T, *, T, *, T> & A33<T, *, T, *, T, *, T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, *, T, *, T, *, T> & A33<T, *, T, *, T, *, T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, *, T, *, T> & _InterfaceWithFiveTypeParameters1<T, *, T, *, T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, *, T, *, T> & _InterfaceWithFiveTypeParameters1<T, *, T, *, T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, *, T, *, T> & _InterfaceWithFiveTypeParameters1<T, *, T, *, T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A33<T, out kotlin.Any?, T, out kotlin.Any?, T, out kotlin.Any?, T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<T, out kotlin.Any?, T, out kotlin.Any?, T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 34
-interface A34<T> { fun test() }
-
-fun <T> case_34(x: A34<out T>?) {
+fun <T> case_34(x: _InterfaceWithTypeParameter1<out T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T> & A34<out T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T> & A34<out T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T> & A34<out T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A34<out T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A34<out T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A34<out T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A34<out T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 35
-interface A35<T> { fun test() }
-
-fun <T> case_35(x: A35<in T>?) {
+fun <T> case_35(x: _InterfaceWithTypeParameter1<in T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T> & A35<in T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T> & A35<in T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T> & A35<in T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T> & _InterfaceWithTypeParameter1<in T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A35<in T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A35<in T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T>"), DEBUG_INFO_EXPRESSION_TYPE("A35<in T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A35<in T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<in T>")!>it<!>.itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 36
-interface A36<T> { fun test() }
-
-fun <T> case_36(x: A36<out T>?) {
+fun <T> case_36(x: _InterfaceWithTypeParameter1<out T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T> & A36<out T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T> & A36<out T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T> & A36<out T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T> & _InterfaceWithTypeParameter1<out T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A36<out T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A36<out T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T>"), DEBUG_INFO_EXPRESSION_TYPE("A36<out T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A36<out T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTypeParameter1<out T>")!>it<!>.itest()
         }
     }
 }
@@ -1009,43 +953,39 @@ fun <T> case_38(x: Map<*, <!REDUNDANT_PROJECTION!>out<!> T>?) {
 }
 
 // TESTCASE NUMBER: 39
-interface A39<T1, T2> { fun test() }
-
-fun <T> case_39(x: A39<in T, out T>?) {
+fun <T> case_39(x: _InterfaceWithTwoTypeParameters<in T, out T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T> & A39<in T, out T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T> & A39<in T, out T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T> & _InterfaceWithTwoTypeParameters<in T, out T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T> & _InterfaceWithTwoTypeParameters<in T, out T>?")!>x<!>.equals(x)
 
         x.equals(x)
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T>"), DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T>")!>this<!>
             equals(this)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T>"), DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T>")!>this<!>.equals(x)
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A39<in T, out T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, out T>")!>it<!>.equals(it)
         }
     }
 }
 
 // TESTCASE NUMBER: 40
-interface A40<T1, T2> { fun test() }
-
-fun <T> case_40(x: A40<in T, in T>?) {
+fun <T> case_40(x: _InterfaceWithTwoTypeParameters<in T, in T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T> & A40<in T, in T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T> & A40<in T, in T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T> & _InterfaceWithTwoTypeParameters<in T, in T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T> & _InterfaceWithTwoTypeParameters<in T, in T>?")!>x<!>.equals(x)
 
         x.equals(x)
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T>"), DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T>")!>this<!>
             equals(this)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T>"), DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T>")!>this<!>.equals(x)
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A40<in T, in T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithTwoTypeParameters<in T, in T>")!>it<!>.equals(it)
         }
     }
 }
@@ -1123,27 +1063,25 @@ fun <T> case_43(x: Map<in T, T>?) {
 }
 
 // TESTCASE NUMBER: 44
-interface A44<T1, T2, T3, T4, T5, T6, T7> { fun test() }
-
-fun <T> case_44(x: A44<in T, *, out T, *, T, *, in T>?) {
+fun <T> case_44(x: _InterfaceWithFiveTypeParameters1<in T, *, out T, *, T>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, *, out T, *, T, *, in T> & A44<in T, *, out T, *, T, *, in T>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, *, out T, *, T, *, in T> & A44<in T, *, out T, *, T, *, in T>?")!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, *, out T, *, T, *, in T> & A44<in T, *, out T, *, T, *, in T>?")!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, *, out T, *, T> & _InterfaceWithFiveTypeParameters1<in T, *, out T, *, T>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, *, out T, *, T> & _InterfaceWithFiveTypeParameters1<in T, *, out T, *, T>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, *, out T, *, T> & _InterfaceWithFiveTypeParameters1<in T, *, out T, *, T>?")!>x<!>.itest()
 
         x.equals(x)
-        x.test()
+        x.itest()
         x.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>"), DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>")!>this<!>
             equals(this)
-            test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>"), DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>"), DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>")!>this<!>.test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>"), DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>")!>this<!>.itest()
         }
         x.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("A44<in T, out kotlin.Any?, out T, out kotlin.Any?, T, out kotlin.Any?, in T>")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_InterfaceWithFiveTypeParameters1<in T, out kotlin.Any?, out T, out kotlin.Any?, T>")!>it<!>.itest()
         }
     }
 }
@@ -1216,33 +1154,30 @@ fun <T> case_46(x: T) where T : CharSequence?, T: Comparable<T>?, T: Iterable<*>
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A47_1<T> { fun test1() {} }
-interface A47_2<T> { fun test2() }
-
-fun <T> case_47(x: T?) where T : A47_1<T>, T: Comparable<*>?, T: A47_2<out T>? {
+fun <T> case_47(x: T?) where T : Inv<T>, T: Comparable<*>?, T: _InterfaceWithTypeParameter1<out T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        x<!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test1()
-            <!UNSAFE_CALL!>test2<!>()
+            test()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
 
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!><!UNREACHABLE_CODE!>compareTo(<!>return<!UNREACHABLE_CODE!>)<!>
@@ -1264,33 +1199,30 @@ fun <T> case_47(x: T?) where T : A47_1<T>, T: Comparable<*>?, T: A47_2<out T>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A48_1<T> { fun test1() {} }
-interface A48_2<T> { fun test2() }
-
-fun <T> case_48(x: T?) where T : A48_1<out T>, T: A48_2<in T>? {
+fun <T> case_48(x: T?) where T : Inv<out T>, T: _InterfaceWithTypeParameter1<in T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        x<!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test1()
-            <!UNSAFE_CALL!>test2<!>()
+            test()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
     }
 }
@@ -1300,33 +1232,30 @@ fun <T> case_48(x: T?) where T : A48_1<out T>, T: A48_2<in T>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A49_1<T> { fun test1() {} }
-interface A49_2<T> { fun test2() }
-
-fun <T> case_49(x: T?) where T : A49_1<in T>, T: A49_2<in T>? {
+fun <T> case_49(x: T?) where T : Inv<in T>, T: _InterfaceWithTypeParameter1<in T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        x<!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test1()
-            <!UNSAFE_CALL!>test2<!>()
+            test()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
     }
 }
@@ -1336,33 +1265,30 @@ fun <T> case_49(x: T?) where T : A49_1<in T>, T: A49_2<in T>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A50_1<T> { fun test1() {} }
-interface A50_2<T> { fun test2() {} }
-
-fun <T> case_50(x: T?) where T : A50_1<out T>, T: A50_2<out T>? {
+fun <T> case_50(x: T?) where T : Inv<out T>, T: _InterfaceWithTypeParameter1<out T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        x<!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test1()
-            <!UNSAFE_CALL!>test2<!>()
+            test()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
     }
 }
@@ -1372,65 +1298,59 @@ fun <T> case_50(x: T?) where T : A50_1<out T>, T: A50_2<out T>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A51_1<T> { fun test1() {} }
-interface A51_2<T> { fun test2() }
-
-fun <T> case_51(x: T?) where T : A51_1<T>, T: A51_2<out T>? {
+fun <T> case_51(x: T?) where T : Inv<T>, T: _InterfaceWithTypeParameter1<out T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        x<!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test1()
-            <!UNSAFE_CALL!>test2<!>()
+            test()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 52
-class A52_1<T> { fun test1() {} }
-interface A52_2<T> { fun test2() }
-
-fun <T> case_52(x: T?) where T : A52_1<in T>, T: A52_2<T>? {
+fun <T> case_52(x: T?) where T : Inv<in T>, T: _InterfaceWithTypeParameter1<T>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test1()
-            test2()
+            test()
+            itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest()
         }
     }
 }
@@ -1440,33 +1360,30 @@ fun <T> case_52(x: T?) where T : A52_1<in T>, T: A52_2<T>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A53_1<T> { fun test1() {} }
-interface A53_2<T> { fun test2() }
-
-fun <T> case_53(x: T?) where T : A53_1<in T>, T: A53_2<*>? {
+fun <T> case_53(x: T?) where T : Inv<in T>, T: _InterfaceWithTypeParameter1<*>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        x<!UNSAFE_CALL!>.<!>test2()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test1()
-            <!UNSAFE_CALL!>test2<!>()
+            test()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
     }
 }
@@ -1476,95 +1393,87 @@ fun <T> case_53(x: T?) where T : A53_1<in T>, T: A53_2<*>? {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A54_1<T> { fun test1() {} }
-interface A54_2<T> { fun test2() }
-
-fun <T> case_54(x: T?) where T : A54_1<*>, T: A54_2<out T?>? {
+fun <T> case_54(x: T?) where T : Inv<*>, T: _InterfaceWithTypeParameter1<out T?>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>test2()
-
-        <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        x<!UNSAFE_CALL!>.<!>test2()
-        <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
-            equals(this)
-            test1()
-            <!UNSAFE_CALL!>test2<!>()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
-        }
-        <!DEBUG_INFO_SMARTCAST!>x<!>.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
-        }
-    }
-}
-
-// TESTCASE NUMBER: 55
-class A55_1<T> { fun test1() {} }
-interface A55_2<T> { fun test2() }
-
-fun <T> case_55(x: T?) where T : A55_1<*>, T: A55_2<T>? {
-    if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test2()
-
-        <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test2()
-        <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
-            equals(this)
-            test1()
-            test2()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test2()
-        }
-        <!DEBUG_INFO_SMARTCAST!>x<!>.also {
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test2()
-        }
-    }
-}
-
-// TESTCASE NUMBER: 56
-interface A56 { fun test() }
-
-fun <T> case_56(x: T) where T : Number?, T: A56? {
-    if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.toByte()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
         <!DEBUG_INFO_SMARTCAST!>x<!>.test()
-        <!DEBUG_INFO_SMARTCAST!>x<!>.toByte()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
             test()
-            <!DEBUG_INFO_SMARTCAST!>x<!>.toByte()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.toByte()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
+        }
+    }
+}
+
+// TESTCASE NUMBER: 55
+fun <T> case_55(x: T?) where T : Inv<*>, T: _InterfaceWithTypeParameter1<T>? {
+    if (x != null) {
+        <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T? & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
+
+        <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
+            equals(this)
+            test()
+            itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest()
+        }
+        <!DEBUG_INFO_SMARTCAST!>x<!>.also {
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest()
+        }
+    }
+}
+
+// TESTCASE NUMBER: 56
+fun <T> case_56(x: T) where T : Number?, T: _Interface1? {
+    if (x != null) {
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.toByte()
+
+        <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.toByte()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
+            equals(this)
+            itest()
+            <!DEBUG_INFO_SMARTCAST!>x<!>.toByte()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.toByte()
+        }
+        <!DEBUG_INFO_SMARTCAST!>x<!>.also {
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.toByte()
         }
     }
@@ -1607,27 +1516,25 @@ fun <T> case_57(x: T) where T : List<*>?, T: Comparable<T?> {
  * TESTCASE NUMBER: 58
  * NOTE: lazy smartcasts
  */
-interface A58<T> { fun test() }
-
-fun <T : A58<A58<A58<A58<A58<A58<A58<A58<A58<A58<T>>>>>>>>>>?> case_59(x: T) {
+fun <T : _InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<_InterfaceWithTypeParameter1<T>>>>>>>>>>?> case_59(x: T) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            test()
+            itest()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest()
         }
     }
 }
@@ -1638,39 +1545,35 @@ fun <T : A58<A58<A58<A58<A58<A58<A58<A58<A58<A58<T>>>>>>>>>>?> case_59(x: T) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A59_1<T1, T2, T3, T4, T5, T6, T7> { fun test1() }
-interface A59_2<T1, T2, T3, T4, T5, T6, T7> { fun test2() }
-interface A59_3<T1, T2, T3, T4, T5, T6, T7> { fun test3() }
-
-fun <T> case_59(x: T) where T: A59_1<in T, *, out T?, Nothing?, T, T?, Any>?, T: A59_2<out T, in T?, T, *, Unit?, Int, T?>?, T: A59_3<out Nothing, in T, T, in Int?, Number, out T?, out T?>? {
+fun <T> case_59(x: T) where T: _InterfaceWithFiveTypeParameters1<in T, *, out T?, Nothing?, T>?, T: _InterfaceWithFiveTypeParameters2<out T, in T?, T, *, Unit?>?, T: _InterfaceWithFiveTypeParameters3<out Nothing, in T, T, in Int?, Number>? {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test1()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test2()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test3()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest1()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest2()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest3()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test1()
-        x<!UNSAFE_CALL!>.<!>test2()
-        x<!UNSAFE_CALL!>.<!>test3()
+        x<!UNSAFE_CALL!>.<!>itest1()
+        x<!UNSAFE_CALL!>.<!>itest2()
+        x<!UNSAFE_CALL!>.<!>itest3()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test1<!>()
-            <!UNSAFE_CALL!>test2<!>()
-            <!UNSAFE_CALL!>test3<!>()
+            <!UNSAFE_CALL!>itest1<!>()
+            <!UNSAFE_CALL!>itest2<!>()
+            <!UNSAFE_CALL!>itest3<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test2()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test3()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest3()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test2()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test3()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest3()
         }
     }
 }
@@ -1681,70 +1584,66 @@ fun <T> case_59(x: T) where T: A59_1<in T, *, out T?, Nothing?, T, T?, Any>?, T:
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-interface A60<T> { fun test() }
-
-fun <T: A60<out T>?> case_60(x: T) {
+fun <T: _InterfaceWithTypeParameter1<out T>?> case_60(x: T) {
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>test()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!><!UNSAFE_CALL!>.<!>itest()
 
         <!DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-        x<!UNSAFE_CALL!>.<!>test()
+        x<!UNSAFE_CALL!>.<!>itest()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
             equals(this)
-            <!UNSAFE_CALL!>test<!>()
+            <!UNSAFE_CALL!>itest<!>()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.equals(x)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!><!UNSAFE_CALL!>.<!>itest()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>test()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!><!UNSAFE_CALL!>.<!>itest()
         }
     }
 }
 
 // TESTCASE NUMBER: 61
-interface A61<T> { fun test1() }
-interface B61<T>: A61<T>, C61<T> { fun test2() }
-interface C61<T>: A61<T> { fun test3() }
+interface Case61_1<T>: _InterfaceWithTypeParameter1<T>, Case61_2<T> { fun test1() }
+interface Case61_2<T>: _InterfaceWithTypeParameter1<T> { fun test2() }
 
-class D61<T>: A61<T>, B61<T>, C61<T> {
+class Case61_3<T>: _InterfaceWithTypeParameter1<T>, Case61_1<T>, Case61_2<T> {
     override fun test1() {}
     override fun test2() {}
-    override fun test3() {}
     fun test4() {}
 }
 
-fun <T> case_61(x: T) where T : A61<T>?, T: D61<T>?, T: B61<T>?, T: C61<T>? {
+fun <T> T.case_61(x: T) where T : _InterfaceWithTypeParameter1<T>?, T: Case61_3<T>?, T: Case61_1<T>?, T: Case61_2<T>? {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test1()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest1()
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test2()
-        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test3()
+        <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.itest1()
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!"), DEBUG_INFO_SMARTCAST!>x<!>.test4()
 
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test1()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest1()
         <!DEBUG_INFO_SMARTCAST!>x<!>.test2()
-        <!DEBUG_INFO_SMARTCAST!>x<!>.test3()
+        <!DEBUG_INFO_SMARTCAST!>x<!>.itest1()
         <!DEBUG_INFO_SMARTCAST!>x<!>.test4()
         <!DEBUG_INFO_SMARTCAST!>x<!>.apply {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>
-            test1()
+            itest1()
             test2()
-            test3()
+            itest1()
             test4()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest1()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test2()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test3()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.itest1()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!"), DEBUG_INFO_EXPRESSION_TYPE("T!!")!>this<!>.test4()
         }
         <!DEBUG_INFO_SMARTCAST!>x<!>.also {
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest1()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test2()
-            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test3()
+            <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.itest1()
             <!DEBUG_INFO_EXPRESSION_TYPE("T!!")!>it<!>.test4()
         }
     }

@@ -9,14 +9,14 @@
  * PLACE: type-inference, smart-casts, smart-casts-sources -> paragraph 6 -> sentence 1
  * NUMBER: 11
  * DESCRIPTION: Nullability condition, if, intersection types
- * HELPERS: classesWithProjections
+ * HELPERS: generics, interfaces
  */
 
 // TESTCASE NUMBER: 1
-fun <A, B : Inv<A>, C: Out<A?>>case_1_1(a: C, b: B) = select(a.x, b.x)
+fun <A, B : Inv<A>, C: Out<A?>> case_1(a: C, b: B) = select(a.x, b.x)
 
 fun case_1() {
-    val x = case_1_1(Out(10), Inv(0.1))
+    val x = case_1(Out(10), Inv(0.1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("{Comparable<{Byte & Double & Int & Long & Short}> & Number} & {Comparable<{Byte & Double & Int & Long & Short}> & Number}?")!>x<!>
@@ -25,10 +25,10 @@ fun case_1() {
 }
 
 // TESTCASE NUMBER: 2
-fun <A, B : Inv<A>, C: Out<A?>>case_2_1(a: C, b: B) = select(a.x, b.x)
+fun <A, B : Inv<A>, C: Out<A?>> case_2(a: C, b: B) = select(a.x, b.x)
 
 fun case_2(y: Int) {
-    val x = case_2_1(Out(y), Inv(0.1))
+    val x = case_2(Out(y), Inv(0.1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("{Comparable<{Double & Int}> & Number} & {Comparable<{Double & Int}> & Number}?")!>x<!>
@@ -64,29 +64,26 @@ fun case_3(a: Int?, b: Float?, c: Double?, d: Boolean?) {
  * TESTCASE NUMBER: 4
  * ISSUES: KT-28670
  */
-interface A4
-interface B4
-
-fun case_4(a: A4?, b: B4?, d: Boolean) {
-    a as B4?
-    b as A4?
-    val x = when (d) {
+fun case_4(a: _Interface1?, b: _Interface2?, c: Boolean) {
+    a as _Interface2?
+    b as _Interface1?
+    val x = when (c) {
         true -> a
         false -> b
     }
 
     x.apply {
-        <!DEBUG_INFO_EXPRESSION_TYPE("{A4? & B4?}"), DEBUG_INFO_EXPRESSION_TYPE("{A4? & B4?}")!>this<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>this<!>
         if (this != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A4? & B4?}"), DEBUG_INFO_EXPRESSION_TYPE("{A4? & B4?}")!>this<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A4 & B4}"), DEBUG_INFO_EXPRESSION_TYPE("{A4? & B4?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
         }
     }
     x.let {
-        <!DEBUG_INFO_EXPRESSION_TYPE("{A4? & B4?}")!>it<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>it<!>
         if (it != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A4 & B4} & {A4? & B4?}")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A4? & B4?} & {A4 & B4}"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2} & {_Interface1? & _Interface2?}")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & {_Interface1 & _Interface2}"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
         }
     }
 }
@@ -95,12 +92,9 @@ fun case_4(a: A4?, b: B4?, d: Boolean) {
  * TESTCASE NUMBER: 5
  * ISSUES: KT-28670
  */
-interface A5
-interface B5
-
-fun case_5(a: A5?, b: B5?, d: Boolean) {
-    a as B5?
-    b as A5
+fun case_5(a: _Interface1?, b: _Interface2?, d: Boolean) {
+    a as _Interface2?
+    b as _Interface1
     val x = when (d) {
         true -> a
         false -> b
@@ -108,14 +102,14 @@ fun case_5(a: A5?, b: B5?, d: Boolean) {
 
     x.apply {
         if (this != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A5? & B5?}"), DEBUG_INFO_EXPRESSION_TYPE("{A5? & B5?}")!>this<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & B5}"), DEBUG_INFO_EXPRESSION_TYPE("{A5? & B5?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
         }
     }
     x.let {
         if (it != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A5 & B5} & {A5? & B5?}")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A5? & B5?} & {A5 & B5}"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2} & {_Interface1? & _Interface2?}")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & {_Interface1 & _Interface2}"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
         }
     }
 }
@@ -124,40 +118,32 @@ fun case_5(a: A5?, b: B5?, d: Boolean) {
  * TESTCASE NUMBER: 6
  * ISSUES: KT-28670
  */
-interface A6 {
-    fun test1() {}
-}
-interface B6 {
-    fun test2() {}
-}
-interface C6
-
-fun case_6(a: A6?, b: B6, d: Boolean) {
-    a as B6?
-    b as A6
+fun case_6(a: _Interface1?, b: _Interface2, d: Boolean) {
+    a as _Interface2?
+    b as _Interface1
     val x = when (d) {
         true -> a
         false -> b
     }
 
     x.apply {
-        this as C6
-        <!DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?}"), DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?}")!>this<!>
+        this as _Interface3
+        <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>this<!>
         if (<!SENSELESS_COMPARISON!>this != null<!>) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?}"), DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?}")!>this<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("C6"), DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & B6}"), DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?}"), DEBUG_INFO_SMARTCAST!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A6 & B6}"), DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?}"), DEBUG_INFO_SMARTCAST!>this<!>.test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_Interface3"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.itest2()
         }
     }
     x.let {
-        it as C6
-        <!DEBUG_INFO_EXPRESSION_TYPE("C6 & {A6 & B6} & {A6? & B6?}")!>it<!>
+        it as _Interface3
+        <!DEBUG_INFO_EXPRESSION_TYPE("_Interface3 & {_Interface1 & _Interface2} & {_Interface1? & _Interface2?}")!>it<!>
         if (<!SENSELESS_COMPARISON!>it != null<!>) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("C6 & {A6 & B6} & {A6? & B6?}")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?} & C6"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?} & {A6 & B6}"), DEBUG_INFO_SMARTCAST!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A6? & B6?} & {A6 & B6}"), DEBUG_INFO_SMARTCAST!>it<!>.test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_Interface3 & {_Interface1 & _Interface2} & {_Interface1? & _Interface2?}")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & _Interface3"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & {_Interface1 & _Interface2}"), DEBUG_INFO_SMARTCAST!>it<!>.itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & {_Interface1 & _Interface2}"), DEBUG_INFO_SMARTCAST!>it<!>.itest2()
         }
     }
 }
@@ -166,40 +152,32 @@ fun case_6(a: A6?, b: B6, d: Boolean) {
  * TESTCASE NUMBER: 7
  * ISSUES: KT-28670
  */
-interface A7 {
-    fun test1() {}
-}
-interface B7 {
-    fun test2() {}
-}
-interface C7
-
-fun case_6(a: A7?, b: B7?, d: Boolean) {
-    a as B7?
-    b as A7?
+fun case_7(a: _Interface1?, b: _Interface2?, d: Boolean) {
+    a as _Interface2?
+    b as _Interface1?
     val x = when (d) {
         true -> a
         false -> b
     }
 
     x.apply {
-        this as C7?
-        <!DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?}"), DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?}")!>this<!>
+        this as _Interface3?
+        <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>this<!>
         if (this != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?}"), DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?}")!>this<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("C7"), DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & B7}"), DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?}"), DEBUG_INFO_SMARTCAST!>this<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A7 & B7}"), DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?}"), DEBUG_INFO_SMARTCAST!>this<!>.test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}")!>this<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_Interface3"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.equals(this)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1 & _Interface2}"), DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?}"), DEBUG_INFO_SMARTCAST!>this<!>.itest2()
         }
     }
     x.let {
-        it as C7?
-        <!DEBUG_INFO_EXPRESSION_TYPE("C7? & {A7? & B7?}")!>it<!>
+        it as _Interface3?
+        <!DEBUG_INFO_EXPRESSION_TYPE("_Interface3? & {_Interface1? & _Interface2?}")!>it<!>
         if (it != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("C7 & {A7 & B7} & {A7? & B7?}")!>it<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?} & C7"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?} & {A7 & B7}"), DEBUG_INFO_SMARTCAST!>it<!>.test1()
-            <!DEBUG_INFO_EXPRESSION_TYPE("{A7? & B7?} & {A7 & B7}"), DEBUG_INFO_SMARTCAST!>it<!>.test2()
+            <!DEBUG_INFO_EXPRESSION_TYPE("_Interface3 & {_Interface1 & _Interface2} & {_Interface1? & _Interface2?}")!>it<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & _Interface3"), DEBUG_INFO_SMARTCAST!>it<!>.equals(it)
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & {_Interface1 & _Interface2}"), DEBUG_INFO_SMARTCAST!>it<!>.itest1()
+            <!DEBUG_INFO_EXPRESSION_TYPE("{_Interface1? & _Interface2?} & {_Interface1 & _Interface2}"), DEBUG_INFO_SMARTCAST!>it<!>.itest2()
         }
     }
 }

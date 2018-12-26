@@ -9,14 +9,12 @@
  * PLACE: type-inference, smart-casts, smart-casts-sources -> paragraph 6 -> sentence 1
  * NUMBER: 10
  * DESCRIPTION: Nullability condition, if, complex types with projections
- * HELPERS: classesWithProjections
+ * HELPERS: generics
  */
 
 // TESTCASE NUMBER: 1
-fun <T> case_1_1(x: List<T>): T? = x[0]
-
 fun case_1() {
-    val x = case_1_1(listOf(10))
+    val x = expandInv(Inv(select(10, null)))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -25,10 +23,8 @@ fun case_1() {
 }
 
 // TESTCASE NUMBER: 2
-fun <T>case_2_1(x: MutableList<out T>): T? = x[0]
-
 fun case_2() {
-    val x = case_2_1(mutableListOf(10))
+    val x = expandOut(Out(select(10, null)))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -37,10 +33,8 @@ fun case_2() {
 }
 
 // TESTCASE NUMBER: 3
-fun <T>case_3_1(x: List<T?>) = x[0]
-
 fun case_3() {
-    val x = case_3_1(listOf(10))
+    val x = expandInv(Inv(select(10, null)))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -49,10 +43,8 @@ fun case_3() {
 }
 
 // TESTCASE NUMBER: 4
-fun <T>case_4_1(x: MutableList<out T?>) = x[0]
-
 fun case_4() {
-    val x = case_4_1(mutableListOf(10))
+    val x = expandOut(Out(select(10, null)))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -61,34 +53,30 @@ fun case_4() {
 }
 
 // TESTCASE NUMBER: 5
-fun <T>case_5_1(x: MutableList<in T>) = x[0]
-
 fun case_5() {
-    val x = case_5_1(mutableListOf(10))
+    val x = expandIn(In<Number?>())
 
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Number & kotlin.Number?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Number? & kotlin.Number"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
     }
 }
 
 // TESTCASE NUMBER: 6
-fun <T>case_6_1(x: MutableList<in T?>) = x[0]
-
 fun case_6() {
-    val x = case_6_1(mutableListOf(10))
+    val x = expandIn(In<Number?>())
 
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Number & kotlin.Number?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Number? & kotlin.Number"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
     }
 }
 
 // TESTCASE NUMBER: 7
-fun <T>case_7_1(x: MutableMap<T?, out T?>) = select(x.values.first(), x.keys.first())
+fun <T> case_7(x: MutableMap<T?, out T?>) = select(x.values.first(), x.keys.first())
 
 fun case_7() {
-    val x = case_7_1(mutableMapOf(10 to 10))
+    val x = case_7(mutableMapOf(10 to 10))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -97,10 +85,10 @@ fun case_7() {
 }
 
 // TESTCASE NUMBER: 8
-fun <T>case_8_1(x: MutableMap<T, out T>) = select(x.values.first(), x.keys.first())
+fun <T> case_8(x: MutableMap<T, out T>) = select(x.values.first(), x.keys.first())
 
 fun case_8() {
-    val x = case_8_1(mutableMapOf(10 to null))
+    val x = case_8(mutableMapOf(10 to null))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -109,10 +97,10 @@ fun case_8() {
 }
 
 // TESTCASE NUMBER: 9
-fun <T>case_9_1(x: MutableMap<T, out T>) = select(x.values.first(), x.keys.first())
+fun <T>case_9(x: MutableMap<T, out T>) = select(x.values.first(), x.keys.first())
 
 fun case_9() {
-    val x = case_9_1(mutableMapOf(null to 10))
+    val x = case_9(mutableMapOf(null to 10))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -121,10 +109,10 @@ fun case_9() {
 }
 
 // TESTCASE NUMBER: 10
-fun <T>case_10_1(x: MutableMap<T?, out T>) = select(x.values.first(), x.keys.first())
+fun <T> case_10(x: MutableMap<T?, out T>) = select(x.values.first(), x.keys.first())
 
 fun case_10() {
-    val x = case_10_1(mutableMapOf(10 to 10))
+    val x = case_10(mutableMapOf(10 to 10))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -133,10 +121,10 @@ fun case_10() {
 }
 
 // TESTCASE NUMBER: 11
-fun <T>case_11_1(x: MutableMap<T, out T?>) = select(x.values.first(), x.keys.first())
+fun <T> case_11(x: MutableMap<T, out T?>) = select(x.values.first(), x.keys.first())
 
 fun case_11() {
-    val x = case_11_1(mutableMapOf(10 to 10))
+    val x = case_11(mutableMapOf(10 to 10))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -145,10 +133,10 @@ fun case_11() {
 }
 
 // TESTCASE NUMBER: 12
-fun <T, K: T, M: K>case_12_1(x: MutableMap<M, K?>) = select(x.values.first(), x.keys.first())
+fun <T, K: T, M: K> case_12(x: MutableMap<M, K?>) = select(x.values.first(), x.keys.first())
 
 fun case_12() {
-    val x = case_12_1(mutableMapOf(10 to 11))
+    val x = case_12(mutableMapOf(10 to 11))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -161,10 +149,10 @@ fun case_12() {
  * ISSUES: KT-28334
  * NOTE: before fix of the issue type is inferred to {Int? & Byte? & Short? & Long?} (smart cast from {Int? & Byte? & Short? & Long?}?)
  */
-fun <T>case_13_1(x: MutableList<T?>?, y: List<T>) = select(x, y)
+fun <T> case_13(x: MutableList<T?>?, y: List<T>) = select(x, y)
 
 fun case_13() {
-    val x = case_13_1(mutableListOf(1), listOf(1))
+    val x = case_13(mutableListOf(1), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?> & kotlin.collections.List<kotlin.Int?>?")!>x<!>
@@ -178,10 +166,10 @@ fun case_13() {
 }
 
 // TESTCASE NUMBER: 14
-fun <T>case_14_1(x: MutableList<T>?, y: List<T?>) = select(x, y)
+fun <T> case_14(x: MutableList<T>?, y: List<T?>) = select(x, y)
 
 fun case_14() {
-    val x = case_14_1(mutableListOf(1), listOf(1))
+    val x = case_14(mutableListOf(1), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?> & kotlin.collections.List<kotlin.Int?>?")!>x<!>
@@ -195,10 +183,10 @@ fun case_14() {
 }
 
 // TESTCASE NUMBER: 15
-fun <T>case_15_1(x: MutableList<T>, y: List<T>?) = select(x, y)
+fun <T> case_15(x: MutableList<T>, y: List<T>?) = select(x, y)
 
 fun case_15() {
-    val x = case_15_1(mutableListOf(null), listOf(1))
+    val x = case_15(mutableListOf(null), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?> & kotlin.collections.List<kotlin.Int?>?")!>x<!>
@@ -216,10 +204,10 @@ fun case_15() {
  * ISSUES: KT-28334
  * NOTE: before fix of the issue type is inferred to {Int? & Byte? & Short? & Long?} (smart cast from {Int? & Byte? & Short? & Long?}?)
  */
-fun <T>case_16_1(x: MutableList<T?>, y: List<T>) = select(x, select(y, null))
+fun <T> case_16(x: MutableList<T?>, y: List<T>) = select(x, select(y, null))
 
 fun case_16() {
-    val x = case_16_1(mutableListOf(1), listOf(1))
+    val x = case_16(mutableListOf(1), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?> & kotlin.collections.List<kotlin.Int?>?")!>x<!>
@@ -233,10 +221,10 @@ fun case_16() {
 }
 
 // TESTCASE NUMBER: 17
-fun <T>case_17_1(x: MutableList<T>, y: List<T?>) = select(x, select(y, null))
+fun <T> case_17(x: MutableList<T>, y: List<T?>) = select(x, select(y, null))
 
 fun case_17() {
-    val x = case_17_1(mutableListOf(1), listOf(1))
+    val x = case_17(mutableListOf(1), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?> & kotlin.collections.List<kotlin.Int?>?")!>x<!>
@@ -254,10 +242,10 @@ fun case_17() {
  * ISSUES: KT-28334
  * NOTE: before fix of the issue type is inferred to {Int? & Byte? & Short? & Long?} (smart cast from {Int? & Byte? & Short? & Long?}?)
  */
-fun <T>case_18_1(x: MutableList<T?>, y: List<T>) = select(x, y)
+fun <T> case_18(x: MutableList<T?>, y: List<T>) = select(x, y)
 
 fun case_18() {
-    val x = case_18_1(mutableListOf(1), listOf(1))
+    val x = case_18(mutableListOf(1), listOf(1))
 
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?>")!>x<!>
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?>")!>x<!>.equals(x)
@@ -269,10 +257,10 @@ fun case_18() {
 }
 
 // TESTCASE NUMBER: 19
-fun <T>case_19_1(x: MutableList<T>, y: List<T>) = select(x, y)
+fun <T> case_19(x: MutableList<T>, y: List<T>) = select(x, y)
 
 fun case_19() {
-    val x = case_19_1(mutableListOf(1), listOf(null))
+    val x = case_19(mutableListOf(1), listOf(null))
 
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?>")!>x<!>
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int?>")!>x<!>.equals(x)
@@ -284,10 +272,10 @@ fun case_19() {
 }
 
 // TESTCASE NUMBER: 20
-fun <T>case_20_1(x: MutableList<T>, y: List<T>) = select(x.first(), y.last())
+fun <T> case_20(x: MutableList<T>, y: List<T>) = select(x.first(), y.last())
 
 fun case_20(y: Int?) {
-    val x = case_20_1(mutableListOf(y), listOf(1))
+    val x = case_20(mutableListOf(y), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -296,10 +284,10 @@ fun case_20(y: Int?) {
 }
 
 // TESTCASE NUMBER: 21
-fun <T>case_21_1(x: MutableList<T?>, y: List<T>) = select(x.first(), y.last())
+fun <T> case_21(x: MutableList<T?>, y: List<T>) = select(x.first(), y.last())
 
 fun case_21(y: Int) {
-    val x = case_21_1(mutableListOf(y), listOf(1))
+    val x = case_21(mutableListOf(y), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -308,10 +296,10 @@ fun case_21(y: Int) {
 }
 
 // TESTCASE NUMBER: 22
-fun <T>case_22_1(x: MutableList<T?>, y: List<T>): T? = select(x.first(), y.last())
+fun <T> case_22(x: MutableList<T?>, y: List<T>): T? = select(x.first(), y.last())
 
 fun case_22(y: Int) {
-    val x = case_22_1(mutableListOf(y), listOf(1))
+    val x = case_22(mutableListOf(y), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -320,10 +308,10 @@ fun case_22(y: Int) {
 }
 
 // TESTCASE NUMBER: 23
-fun <T>case_23_1(x: MutableList<T>, y: List<T>): T = select(x.first(), y.last())
+fun <T> case_23(x: MutableList<T>, y: List<T>): T = select(x.first(), y.last())
 
 fun case_23(y: Int?) {
-    val x = case_23_1(mutableListOf(y), listOf(1))
+    val x = case_23(mutableListOf(y), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -332,10 +320,10 @@ fun case_23(y: Int?) {
 }
 
 // TESTCASE NUMBER: 24
-fun <A, B : A, C: B, D: C, E: D, F>case_24_1(x: MutableList<A>, y: List<F>) where F : E? = select(x.first(), y.last())
+fun <A, B : A, C: B, D: C, E: D, F> case_24(x: MutableList<A>, y: List<F>) where F : E? = select(x.first(), y.last())
 
 fun case_24(y: Int) {
-    val x = case_24_1(mutableListOf(y), listOf(1))
+    val x = case_24(mutableListOf(y), listOf(1))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -344,11 +332,11 @@ fun case_24(y: Int) {
 }
 
 // TESTCASE NUMBER: 25
-fun <A, B : List<A>, C: List<B>, D: List<C>, E: List<C>, F>case_25_1(x: F, y: MutableList<C>) where F : List<E?> =
+fun <A, B : List<A>, C: List<B>, D: List<C>, E: List<C>, F> case_25(x: F, y: MutableList<C>) where F : List<E?> =
     select(x.first()?.first()?.first()?.first(), y.last().last().last())
 
 fun case_25(y: Int) {
-    val x = case_25_1(mutableListOf(listOf(mutableListOf(mutableListOf(y)))), mutableListOf(listOf(mutableListOf(y))))
+    val x = case_25(mutableListOf(listOf(mutableListOf(mutableListOf(y)))), mutableListOf(listOf(mutableListOf(y))))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -361,11 +349,11 @@ fun case_25(y: Int) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-26816
  */
-fun <A, B : List<A>, C: List<B>, D: List<C>, E: List<C>, F>case_26_1(x: F, y: MutableList<C>) where F : List<E?> =
+fun <A, B : List<A>, C: List<B>, D: List<C>, E: List<C>, F> case_26(x: F, y: MutableList<C>) where F : List<E?> =
     select(x.first()?.first()?.first()?.first(), y.last().last().last())
 
 fun case_26(y: Int) {
-    val x = case_26_1(<!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableList<kotlin.collections.List<kotlin.collections.List<kotlin.Nothing>>>")!>mutableListOf(<!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.collections.List<kotlin.collections.MutableList<kotlin.Int>>>"), TYPE_MISMATCH, TYPE_MISMATCH!>listOf(listOf(mutableListOf(y)))<!>)<!>, mutableListOf(listOf(mutableListOf(y))))
+    val x = case_26(<!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableList<kotlin.collections.List<kotlin.collections.List<kotlin.Nothing>>>")!>mutableListOf(<!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.collections.List<kotlin.collections.MutableList<kotlin.Int>>>"), TYPE_MISMATCH, TYPE_MISMATCH!>listOf(listOf(mutableListOf(y)))<!>)<!>, mutableListOf(listOf(mutableListOf(y))))
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>

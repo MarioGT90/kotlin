@@ -9,11 +9,8 @@
  * PLACE: type-inference, smart-casts, smart-casts-sources -> paragraph 6 -> sentence 1
  * NUMBER: 9
  * DESCRIPTION: Nullability condition, if, complex types with projections
- * HELPERS: classesWithProjections
+ * HELPERS: generics
  */
-
-// TESTCASE NUMBER: 13, 14, 15, 16
-class ClassWith6GenericParams<K, in L, out M, O, in P, out R>
 
 // TESTCASE NUMBER: 1
 fun case_1(x: List<<!REDUNDANT_PROJECTION!>out<!> Int?>?) {
@@ -105,16 +102,10 @@ fun case_7() {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-25432
  */
-class A8<T, K, L>(
-    val x: T,
-    val y: K,
-    val z: L
-)
-
-fun case_8(x: A8<out Int?, out Short?, A8<out Int?, out Short?, out String?>?>?) {
+fun case_8(x: _ClassWithThreeTypeParameters<out Int?, out Short?, _ClassWithThreeTypeParameters<out Int?, out Short?, out String?>?>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A8<out kotlin.Int?, out kotlin.Short?, A8<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?> & A8<out kotlin.Int?, out kotlin.Short?, A8<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A8<out kotlin.Int?, out kotlin.Short?, A8<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?> & A8<out kotlin.Int?, out kotlin.Short?, A8<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, _ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?> & _ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, _ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, _ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?> & _ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, _ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?>?")!>x<!>.equals(x)
         if (x.x != null) {
             <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>x.x<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>x.x<!><!UNSAFE_CALL!>.<!>equals(x.x)
@@ -124,8 +115,8 @@ fun case_8(x: A8<out Int?, out Short?, A8<out Int?, out Short?, out String?>?>?)
             <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Short?")!>x.y<!><!UNSAFE_CALL!>.<!>equals(x.y)
         }
         if (x.z != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A8<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?")!>x.z<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A8<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?")!>x.z<!><!UNSAFE_CALL!>.<!>equals(x.z)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?")!>x.z<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<out kotlin.Int?, out kotlin.Short?, out kotlin.String?>?")!>x.z<!><!UNSAFE_CALL!>.<!>equals(x.z)
             if (x.z<!UNSAFE_CALL!>.<!>x != null) {
                 <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>x.z<!UNSAFE_CALL!>.<!>x<!>
                 <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>x.z<!UNSAFE_CALL!>.<!>x<!><!UNSAFE_CALL!>.<!>equals(x.z<!UNSAFE_CALL!>.<!>x)
@@ -152,61 +143,55 @@ fun case_9(a: (MutableList<out Int>) -> MutableList<out Int>?, b: MutableList<ou
 }
 
 // TESTCASE NUMBER: 10
-class A10<T>
-
-fun case_9(a: A10<*>?) {
+fun case_9(a: Inv<*>?) {
     if (a != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A10<*> & A10<*>?")!>a<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A10<*> & A10<*>?")!>a<!>.equals(a)
+        <!DEBUG_INFO_EXPRESSION_TYPE("Inv<*> & Inv<*>?")!>a<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("Inv<*> & Inv<*>?")!>a<!>.equals(a)
     }
 }
 
 // TESTCASE NUMBER: 11
-class A11<out T>
-
-val a10: A11<*>? = null
-
 fun case_10() {
+    val a10: Out<*>? = null
+
     if (a10 != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A11<*> & A11<*>?")!>a10<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A11<*> & A11<*>?")!>a10<!>.equals(a10)
+        <!DEBUG_INFO_EXPRESSION_TYPE("Out<*> & Out<*>?")!>a10<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("Out<*> & Out<*>?")!>a10<!>.equals(a10)
     }
 }
 
 // TESTCASE NUMBER: 12
-class A12<in T>
-
 fun case_11() {
-    val a: A12<*>? = null
+    val a: In<*>? = null
 
     if (a != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A12<*> & A12<*>?")!>a<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A12<*> & A12<*>?")!>a<!>.equals(a)
+        <!DEBUG_INFO_EXPRESSION_TYPE("In<*> & In<*>?")!>a<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("In<*> & In<*>?")!>a<!>.equals(a)
     }
 }
 
 // TESTCASE NUMBER: 13
-fun case_13(a: ClassWith6GenericParams<*, *, *, *, *, *>?) {
+fun case_13(a: _ClassWithSixTypeParameters<*, *, *, *, *, *>?) {
     if (a != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("ClassWith6GenericParams<*, *, *, *, *, *> & ClassWith6GenericParams<*, *, *, *, *, *>?")!>a<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("ClassWith6GenericParams<*, *, *, *, *, *> & ClassWith6GenericParams<*, *, *, *, *, *>?")!>a<!>.equals(a)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithSixTypeParameters<*, *, *, *, *, *> & _ClassWithSixTypeParameters<*, *, *, *, *, *>?")!>a<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithSixTypeParameters<*, *, *, *, *, *> & _ClassWithSixTypeParameters<*, *, *, *, *, *>?")!>a<!>.equals(a)
     }
 }
 
 // TESTCASE NUMBER: 14
-fun case_14(a: ClassWith6GenericParams<*, Int, *, List<*>, *, Map<Float, List<*>>>?) {
+fun case_14(a: _ClassWithSixTypeParameters<*, Int, *, List<*>, *, Map<Float, List<*>>>?) {
     if (a != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("ClassWith6GenericParams<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>> & ClassWith6GenericParams<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>>?")!>a<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("ClassWith6GenericParams<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>> & ClassWith6GenericParams<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>>?")!>a<!>.equals(a)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithSixTypeParameters<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>> & _ClassWithSixTypeParameters<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>>?")!>a<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithSixTypeParameters<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>> & _ClassWithSixTypeParameters<*, kotlin.Int, *, kotlin.collections.List<*>, *, kotlin.collections.Map<kotlin.Float, kotlin.collections.List<*>>>?")!>a<!>.equals(a)
     }
 }
 
 // TESTCASE NUMBER: 15
 fun case_15(a: Any?) {
-    if (a is ClassWith6GenericParams<*, *, *, *, *, *>?) {
+    if (a is _ClassWithSixTypeParameters<*, *, *, *, *, *>?) {
         if (a != null) {
             a
-            <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & ClassWith6GenericParams<*, *, *, *, *, *>"), DEBUG_INFO_SMARTCAST!>a<!>.equals(a)
+            <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & _ClassWithSixTypeParameters<*, *, *, *, *, *>"), DEBUG_INFO_SMARTCAST!>a<!>.equals(a)
         }
     }
 }
@@ -215,10 +200,10 @@ fun case_15(a: Any?) {
 fun case_16(a: Any?) {
     if (a === null) {
     } else {
-        if (a !is ClassWith6GenericParams<*, *, *, *, *, *>?) {
+        if (a !is _ClassWithSixTypeParameters<*, *, *, *, *, *>?) {
         } else {
-            <!DEBUG_INFO_EXPRESSION_TYPE("ClassWith6GenericParams<*, *, *, *, *, *> & kotlin.Any & kotlin.Any?")!>a<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & ClassWith6GenericParams<*, *, *, *, *, *>"), DEBUG_INFO_SMARTCAST!>a<!>.equals(a)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithSixTypeParameters<*, *, *, *, *, *> & kotlin.Any & kotlin.Any?")!>a<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & _ClassWithSixTypeParameters<*, *, *, *, *, *>"), DEBUG_INFO_SMARTCAST!>a<!>.equals(a)
         }
     }
 }
@@ -258,9 +243,7 @@ fun case_17(a: MutableList<out MutableList<MutableList<MutableList<MutableList<M
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A18<T>(val x: T)
-
-fun case_18(a: A18<out Int?>) {
+fun case_18(a: Inv<out Int?>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>a.x<!><!UNSAFE_CALL!>.<!>equals(a.x)
@@ -272,9 +255,7 @@ fun case_18(a: A18<out Int?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A19<T>(val x: T)
-
-fun case_18(a: A19<out Nothing?>) {
+fun case_19(a: Inv<out Nothing?>) {
     if (<!SENSELESS_COMPARISON!>a.x != null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>a.x<!>.equals(a.x)
@@ -286,9 +267,7 @@ fun case_18(a: A19<out Nothing?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A20<T>(val x: T)
-
-fun case_20(a: A20<out Any?>) {
+fun case_20(a: Inv<out Any?>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!><!UNSAFE_CALL!>.<!>equals(a.x)
@@ -300,9 +279,7 @@ fun case_20(a: A20<out Any?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A21<out T>(val x: T)
-
-fun case_21(a: A21<<!REDUNDANT_PROJECTION!>out<!> Int?>) {
+fun case_21(a: Out<<!REDUNDANT_PROJECTION!>out<!> Int?>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int?")!>a.x<!><!UNSAFE_CALL!>.<!>equals(a.x)
@@ -314,9 +291,7 @@ fun case_21(a: A21<<!REDUNDANT_PROJECTION!>out<!> Int?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A22<out T>(val x: T)
-
-fun case_22(a: A22<<!REDUNDANT_PROJECTION!>out<!> Nothing?>) {
+fun case_22(a: Out<<!REDUNDANT_PROJECTION!>out<!> Nothing?>) {
     if (<!SENSELESS_COMPARISON!>a.x != null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>a.x<!>.equals(a.x)
@@ -328,9 +303,7 @@ fun case_22(a: A22<<!REDUNDANT_PROJECTION!>out<!> Nothing?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A23<out T>(val x: T)
-
-fun case_23(a: A23<<!REDUNDANT_PROJECTION!>out<!> Any?>) {
+fun case_23(a: Out<<!REDUNDANT_PROJECTION!>out<!> Any?>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!><!UNSAFE_CALL!>.<!>equals(a.x)
@@ -338,9 +311,7 @@ fun case_23(a: A23<<!REDUNDANT_PROJECTION!>out<!> Any?>) {
 }
 
 // TESTCASE NUMBER: 24
-class A24<out T>(val x: T)
-
-fun case_24(a: A24<Int?>) {
+fun case_24(a: Out<Int?>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int"), DEBUG_INFO_SMARTCAST!>a.x<!>.equals(a.x)
@@ -348,9 +319,7 @@ fun case_24(a: A24<Int?>) {
 }
 
 // TESTCASE NUMBER: 25
-class A25<out T>(val x: T)
-
-fun case_25(a: A25<Nothing?>) {
+fun case_25(a: Out<Nothing?>) {
     if (<!SENSELESS_COMPARISON!>a.x != null<!>) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>a.x<!>.equals(a.x)
@@ -358,9 +327,7 @@ fun case_25(a: A25<Nothing?>) {
 }
 
 // TESTCASE NUMBER: 26
-class A26<out T>(val x: T)
-
-fun case_26(a: A26<Any?>) {
+fun case_26(a: Out<Any?>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any"), DEBUG_INFO_SMARTCAST!>a.x<!>.equals(a.x)
@@ -372,9 +339,7 @@ fun case_26(a: A26<Any?>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A27<T>(val x: T)
-
-fun case_27(a: A27<in Any>) {
+fun case_27(a: Inv<in Any>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!><!UNSAFE_CALL!>.<!>equals(a.x)
@@ -386,9 +351,7 @@ fun case_27(a: A27<in Any>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A28<T>(val x: T)
-
-fun case_28(a: A28<in Float>) {
+fun case_28(a: Inv<in Float>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!><!UNSAFE_CALL!>.<!>equals(a.x)
@@ -400,9 +363,7 @@ fun case_28(a: A28<in Float>) {
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28785
  */
-class A29<T>(val x: T)
-
-fun case_29(a: A29<in Nothing>) {
+fun case_29(a: Inv<in Nothing>) {
     if (a.x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any?")!>a.x<!><!UNSAFE_CALL!>.<!>equals(a.x)
@@ -410,15 +371,9 @@ fun case_29(a: A29<in Nothing>) {
 }
 
 // TESTCASE NUMBER: 30
-class A30<in T>(val x: Int) {
-    fun <K : T> t(): K {
-        return 10 <!UNCHECKED_CAST!>as K<!>
-    }
-}
-
 fun case_30() {
-    val a = A30<Number?>(10)
-    val b = a.t<Int?>()
+    val a = In<Number?>()
+    val b = a.getWithUpperBoundT<Int?>()
 
     if (b != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>b<!>
@@ -427,12 +382,8 @@ fun case_30() {
 }
 
 // TESTCASE NUMBER: 31
-class A31<T>(val x: T) {
-    fun f() = x
-}
-
-fun case_31(z: A31<Int?>) {
-    val x = z.f()
+fun case_31(y: Inv<Int?>) {
+    val x = y.get()
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -441,12 +392,8 @@ fun case_31(z: A31<Int?>) {
 }
 
 // TESTCASE NUMBER: 32
-class A32<T>(val x: T?) {
-    fun f() = x
-}
-
-fun case_32(z: A32<Int>) {
-    val x = z.f()
+fun case_32(y: Inv<Int>) {
+    val x = y.getNullable()
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -455,12 +402,8 @@ fun case_32(z: A32<Int>) {
 }
 
 // TESTCASE NUMBER: 33
-class A33<T>(val x: T) {
-    fun f() = select(x, null)
-}
-
-fun case_33(z: A33<Int>) {
-    val x = z.f()
+fun case_33(y: Inv<Int>) {
+    val x = y.getNullable()
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -469,12 +412,8 @@ fun case_33(z: A33<Int>) {
 }
 
 // TESTCASE NUMBER: 34
-class A34<T>(val x: T) {
-    fun f(): T? = x
-}
-
-fun case_34(z: A34<Int>) {
-    val x = z.f()
+fun case_34(y: Inv<Int>) {
+    val x = y.getNullable()
 
     if (x != null) {
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>

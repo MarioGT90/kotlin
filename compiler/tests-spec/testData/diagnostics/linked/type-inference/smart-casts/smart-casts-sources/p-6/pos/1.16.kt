@@ -1,5 +1,5 @@
 // !LANGUAGE: +NewInference
-// !DIAGNOSTICS: -UNUSED_EXPRESSION
+// !DIAGNOSTICS: -UNUSED_EXPRESSION, -NAME_SHADOWING, -UNUSED_VARIABLE
 // SKIP_TXT
 
 /*
@@ -180,13 +180,8 @@ fun <T> case_24(x: MutableList<out T?>?, y: Nothing?) {
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableList<out T?> & kotlin.collections.MutableList<out T?>?")!>x<!>.equals(x)
 }
 
-
-
-
-
-
-// TESTCASE NUMBER: 1
-fun case_1(x: Int?) {
+// TESTCASE NUMBER: 25
+fun case_25(x: Int?) {
     val x = (l@ {
         if (x == null) return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
@@ -194,8 +189,8 @@ fun case_1(x: Int?) {
     })()
 }
 
-// TESTCASE NUMBER: 2
-fun case_2(x: Unit?, y: List<*>) {
+// TESTCASE NUMBER: 26
+fun case_26(x: Unit?, y: List<*>) {
     y.forEach l@ {
         if (x === null) return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Unit & kotlin.Unit?")!>x<!>
@@ -203,15 +198,15 @@ fun case_2(x: Unit?, y: List<*>) {
     }
 }
 
-// TESTCASE NUMBER: 3
-fun case_3(x: Nothing?) = (l@ {
+// TESTCASE NUMBER: 27
+fun case_27(x: Nothing?) = (l@ {
     if (<!SENSELESS_COMPARISON!><!DEBUG_INFO_CONSTANT!>x<!> != null<!>) else return@l
     <!DEBUG_INFO_CONSTANT, DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>x<!>
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing?")!>x<!>.equals(<!DEBUG_INFO_CONSTANT!>x<!>)
 })()
 
-// TESTCASE NUMBER: 4
-fun case_4(x: Number?) {
+// TESTCASE NUMBER: 28
+fun case_28(x: Number?) {
     {(l@ {
         if (x !== null) else { return@l }
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Number & kotlin.Number?")!>x<!>
@@ -219,15 +214,15 @@ fun case_4(x: Number?) {
     })()}()
 }
 
-// TESTCASE NUMBER: 5
-fun case_5(x: Char?, y: Nothing?) = l@ {
+// TESTCASE NUMBER: 29
+fun case_29(x: Char?, y: Nothing?) = l@ {
     if (x != <!DEBUG_INFO_CONSTANT!>y<!>) else return@l
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Char & kotlin.Char?")!>x<!>
     <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Char? & kotlin.Char"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
 }
 
-// TESTCASE NUMBER: 6
-fun case_6(x: _Object?): Any {
+// TESTCASE NUMBER: 30
+fun case_30(x: _Object?): Any {
     return (l@ {
         if (x !== <!DEBUG_INFO_CONSTANT!>implicitNullableNothingProperty<!>) else { return@l }
         <!DEBUG_INFO_EXPRESSION_TYPE("_Object & _Object?")!>x<!>
@@ -235,8 +230,8 @@ fun case_6(x: _Object?): Any {
     })()
 }
 
-// TESTCASE NUMBER: 7
-fun case_7(x: _Class?): Any {
+// TESTCASE NUMBER: 31
+fun case_31(x: _Class?): Any {
     return l@ {
         if (x === <!DEBUG_INFO_CONSTANT!>implicitNullableNothingProperty<!> || false || false || false) { return@l }
         <!DEBUG_INFO_EXPRESSION_TYPE("_Class & _Class?")!>x<!>
@@ -244,88 +239,72 @@ fun case_7(x: _Class?): Any {
     }
 }
 
-// TESTCASE NUMBER: 8
-fun case_8(x: Any?) {
-    case_8((l@ {
+// TESTCASE NUMBER: 32
+fun case_32(x: Any?) {
+    case_32((l@ {
         if (false || false || false || x == <!DEBUG_INFO_CONSTANT!>nullableNothingProperty<!>) return@l
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int? & kotlin.Int"), DEBUG_INFO_SMARTCAST!>x<!>.inv()
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
     })())
 }
 
-// TESTCASE NUMBER: 9
-fun case_9(x: Any?) {
-    case_9(l@ {
+// TESTCASE NUMBER: 33
+fun case_33(x: Any?) {
+    case_33(l@ {
         if (x != <!DEBUG_INFO_CONSTANT!>implicitNullableNothingProperty<!> && true && true && true) else { return@l }
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.String & kotlin.String?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.String? & kotlin.String"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
     })
 }
 
-// TESTCASE NUMBER: 10
-fun case_10(x: Float?) {
-    l@ {
+// TESTCASE NUMBER: 34
+fun case_34(x: Float?) {
+    (l@ {
         if (true && true && true && x !== null) else return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Float & kotlin.Float?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Float? & kotlin.Float"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-    }.equals(l@ {
+    }).equals(l@ {
         if (true && true && true && x !== null) else return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Float & kotlin.Float?")!>x<!>
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Float? & kotlin.Float"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
     })
 }
 
-// TESTCASE NUMBER: 11
-fun case_11(x: Any?) {
-    case_11 l@ {
+// TESTCASE NUMBER: 35
+fun case_35(x: Any?) {
+    case_35 l@ {
         if (x == null) return@l
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<*> & kotlin.collections.List<*>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<*> & kotlin.collections.List<*>?")!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
     }
 }
 
 /*
- * TESTCASE NUMBER: 12
+ * TESTCASE NUMBER: 36
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28993
  */
-fun case_12(x: Any?, y: Any? = null, z: Any? = null) {
-    case_12 l@ {
+fun case_36(x: Any?) {
+    case_36 l@ {
         if (x === null) return@l
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?> & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>? & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-    } l@ {
-        if (x === null) return@l
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?> & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>? & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-    } l@ {
-        if (x === null) return@l
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?> & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>? & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
     }
 }
 
 /*
- * TESTCASE NUMBER: 13
+ * TESTCASE NUMBER: 37
  * UNEXPECTED BEHAVIOUR
  * ISSUES: KT-28993
  */
-fun case_13(x: Any?, y: Any? = null, z: Any? = null) = case_13 l@ {
+fun case_37(x: Any?): Any? = case_37 l@ {
     if (x === null) return@l
-    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?> & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>?")!>x<!>
-    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>? & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-} l@ {
-    if (x === null) return@l
-    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?> & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>?")!>x<!>
-    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>? & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
-} l@ {
-    if (x === null) return@l
-    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?> & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>?")!>x<!>
-    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>? & kotlin.collections.Map<kotlin.Unit, kotlin.Nothing?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any & kotlin.Any?")!>x<!>
+    <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Any? & kotlin.Any"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
 }
 
-// TESTCASE NUMBER: 14
-fun case_14(x: MutableCollection<in Number>?) {
+// TESTCASE NUMBER: 38
+fun case_39(x: MutableCollection<in Number>?) {
     (l1@ {
         (l2@ {
             if (x !== null) else {
@@ -337,8 +316,8 @@ fun case_14(x: MutableCollection<in Number>?) {
     })()
 }
 
-// TESTCASE NUMBER: 15
-fun case_15(x: MutableCollection<out Nothing?>?, y: Nothing?) {
+// TESTCASE NUMBER: 39
+fun case_39(x: MutableCollection<out Nothing?>?, y: Nothing?) {
     (l2@ {
         if (x != <!DEBUG_INFO_CONSTANT!>y<!>) else return@l2
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableCollection<out kotlin.Nothing?> & kotlin.collections.MutableCollection<out kotlin.Nothing?>?")!>x<!>
@@ -346,8 +325,8 @@ fun case_15(x: MutableCollection<out Nothing?>?, y: Nothing?) {
     })()
 }
 
-// TESTCASE NUMBER: 16
-fun case_16(x: Collection<Collection<Collection<Collection<Collection<Collection<Collection<*>>>>>>>?) {
+// TESTCASE NUMBER: 40
+fun case_40(x: Collection<Collection<Collection<Collection<Collection<Collection<Collection<*>>>>>>>?) {
     val z = (l@ {
         if (x !== <!DEBUG_INFO_CONSTANT!>implicitNullableNothingProperty<!>) else { return@l }
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<*>>>>>>> & kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<kotlin.collections.Collection<*>>>>>>>?")!>x<!>
@@ -355,8 +334,8 @@ fun case_16(x: Collection<Collection<Collection<Collection<Collection<Collection
     })()
 }
 
-// TESTCASE NUMBER: 17
-fun case_17(x: MutableMap<*, *>?) {
+// TESTCASE NUMBER: 41
+fun case_41(x: MutableMap<*, *>?) {
     listOf(l@ {
         if (x === <!DEBUG_INFO_CONSTANT!>implicitNullableNothingProperty<!> || false) { return@l }
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableMap<*, *> & kotlin.collections.MutableMap<*, *>?")!>x<!>
@@ -364,8 +343,8 @@ fun case_17(x: MutableMap<*, *>?) {
     })
 }
 
-// TESTCASE NUMBER: 18
-fun case_18(x: MutableMap<out Number, in Number>?) {
+// TESTCASE NUMBER: 42
+fun case_42(x: MutableMap<out Number, in Number>?) {
     return (l@ {
         if (false || false || false || x == <!DEBUG_INFO_CONSTANT!>nullableNothingProperty<!>) return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableMap<out kotlin.Number, in kotlin.Number> & kotlin.collections.MutableMap<out kotlin.Number, in kotlin.Number>?")!>x<!>
@@ -373,8 +352,8 @@ fun case_18(x: MutableMap<out Number, in Number>?) {
     })()
 }
 
-// TESTCASE NUMBER: 19
-fun case_19(x: MutableList<in MutableList<in MutableList<in MutableList<in MutableList<in MutableList<in MutableList<in Int>>>>>>>?) {
+// TESTCASE NUMBER: 43
+fun case_43(x: MutableList<in MutableList<in MutableList<in MutableList<in MutableList<in MutableList<in MutableList<in Int>>>>>>>?): Any? {
     return l@ {
         if (x === <!DEBUG_INFO_CONSTANT!>implicitNullableNothingProperty<!> && true) else { return@l }
         <!DEBUG_INFO_CONSTANT, DEBUG_INFO_EXPRESSION_TYPE("kotlin.Nothing? & kotlin.collections.MutableList<in kotlin.collections.MutableList<in kotlin.collections.MutableList<in kotlin.collections.MutableList<in kotlin.collections.MutableList<in kotlin.collections.MutableList<in kotlin.collections.MutableList<in kotlin.Int>>>>>>>?")!>x<!>
@@ -382,8 +361,8 @@ fun case_19(x: MutableList<in MutableList<in MutableList<in MutableList<in Mutab
     }
 }
 
-// TESTCASE NUMBER: 20
-fun case_20(x: MutableList<out MutableList<out MutableList<out MutableList<out MutableList<out MutableList<out MutableList<out Number>>>>>>>?) {
+// TESTCASE NUMBER: 44
+fun case_44(x: MutableList<out MutableList<out MutableList<out MutableList<out MutableList<out MutableList<out MutableList<out Number>>>>>>>?) {
     (l@ {
         if (true && true && true && x !== null) else return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.Number>>>>>>> & kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.collections.MutableList<out kotlin.Number>>>>>>>?")!>x<!>
@@ -391,8 +370,8 @@ fun case_20(x: MutableList<out MutableList<out MutableList<out MutableList<out M
     }).invoke()
 }
 
-// TESTCASE NUMBER: 21
-fun <T> case_21(x: T) {
+// TESTCASE NUMBER: 45
+fun <T> case_45(x: T) {
     val y = (l@ {
         if (x == null) return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("T & T!!")!>x<!>
@@ -400,8 +379,8 @@ fun <T> case_21(x: T) {
     })()
 }
 
-// TESTCASE NUMBER: 22
-fun <T> case_22(x: T?) {
+// TESTCASE NUMBER: 46
+fun <T> case_46(x: T?) {
     (l@ {
         if (x === null) return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("T!! & T?")!>x<!>
@@ -409,8 +388,8 @@ fun <T> case_22(x: T?) {
     })()
 }
 
-// TESTCASE NUMBER: 23
-fun <T> case_23(x: MutableList<in T>?) {
+// TESTCASE NUMBER: 47
+fun <T> case_47(x: MutableList<in T>?) {
     val y = l@ {
         if (x !== null) else return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableList<in T> & kotlin.collections.MutableList<in T>?")!>x<!>
@@ -418,8 +397,8 @@ fun <T> case_23(x: MutableList<in T>?) {
     }
 }
 
-// TESTCASE NUMBER: 24
-fun <T> case_24(x: MutableList<out T?>?, y: Nothing?) {
+// TESTCASE NUMBER: 48
+fun <T> case_48(x: MutableList<out T?>?, y: Nothing?) {
     val y = ((((l@ {
         if (x !== <!DEBUG_INFO_CONSTANT!>y<!> && true) else return@l
         <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.MutableList<out T?> & kotlin.collections.MutableList<out T?>?")!>x<!>

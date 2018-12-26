@@ -7,3 +7,4 @@ val nullableNothingProperty: Nothing? = null
 val intProperty: Int = ""
 val anonymousTypeProperty = object {}
 val nullableAnonymousTypeProperty = if (true) object {} else null
+val nullableList: List<Int>? = null

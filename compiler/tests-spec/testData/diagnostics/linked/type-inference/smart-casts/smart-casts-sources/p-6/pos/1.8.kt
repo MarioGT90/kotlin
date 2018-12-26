@@ -10,6 +10,7 @@
  * NUMBER: 8
  * DESCRIPTION: Nullability condition, if, complex types
  * UNEXPECTED BEHAVIOUR
+ * HELPERS: properties, generics
  */
 
 // TESTCASE NUMBER: 1
@@ -65,12 +66,10 @@ fun case_4(a: List<Int>?, b: List<Int> = if (a != null) <!DEBUG_INFO_EXPRESSION_
 }
 
 // TESTCASE NUMBER: 5
-val x: List<Int>? = null
-
 fun case_5() {
-    if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int> & kotlin.collections.List<kotlin.Int>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int>? & kotlin.collections.List<kotlin.Int>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+    if (nullableList != null) {
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int> & kotlin.collections.List<kotlin.Int>?")!>nullableList<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.collections.List<kotlin.Int>? & kotlin.collections.List<kotlin.Int>"), DEBUG_INFO_SMARTCAST!>nullableList<!>.equals(nullableList)
     }
 }
 
@@ -95,16 +94,10 @@ fun case_7() {
 }
 
 // TESTCASE NUMBER: 8
-class A8<T, K, L>(
-    val x: T,
-    val y: K,
-    val z: L
-)
-
-fun case_8(x: A8<Int?, Short?, A8<Int?, Short?, String?>?>?) {
+fun case_8(x: _ClassWithThreeTypeParameters<Int?, Short?, _ClassWithThreeTypeParameters<Int?, Short?, String?>?>?) {
     if (x != null) {
-        <!DEBUG_INFO_EXPRESSION_TYPE("A8<kotlin.Int?, kotlin.Short?, A8<kotlin.Int?, kotlin.Short?, kotlin.String?>?> & A8<kotlin.Int?, kotlin.Short?, A8<kotlin.Int?, kotlin.Short?, kotlin.String?>?>?")!>x<!>
-        <!DEBUG_INFO_EXPRESSION_TYPE("A8<kotlin.Int?, kotlin.Short?, A8<kotlin.Int?, kotlin.Short?, kotlin.String?>?>? & A8<kotlin.Int?, kotlin.Short?, A8<kotlin.Int?, kotlin.Short?, kotlin.String?>?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, _ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, kotlin.String?>?> & _ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, _ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, kotlin.String?>?>?")!>x<!>
+        <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, _ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, kotlin.String?>?>? & _ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, _ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, kotlin.String?>?>"), DEBUG_INFO_SMARTCAST!>x<!>.equals(x)
         if (<!DEBUG_INFO_SMARTCAST!>x<!>.x != null) {
             <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!><!DEBUG_INFO_SMARTCAST!>x<!>.x<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int"), DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.x<!>.equals(<!DEBUG_INFO_SMARTCAST!>x<!>.x)
@@ -114,8 +107,8 @@ fun case_8(x: A8<Int?, Short?, A8<Int?, Short?, String?>?>?) {
             <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Short"), DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.y<!>.equals(<!DEBUG_INFO_SMARTCAST!>x<!>.y)
         }
         if (<!DEBUG_INFO_SMARTCAST!>x<!>.z != null) {
-            <!DEBUG_INFO_EXPRESSION_TYPE("A8<kotlin.Int?, kotlin.Short?, kotlin.String?> & A8<kotlin.Int?, kotlin.Short?, kotlin.String?>?")!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>
-            <!DEBUG_INFO_EXPRESSION_TYPE("A8<kotlin.Int?, kotlin.Short?, kotlin.String?>"), DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>.equals(<!DEBUG_INFO_SMARTCAST!>x<!>.z)
+            <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, kotlin.String?> & _ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, kotlin.String?>?")!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>
+            <!DEBUG_INFO_EXPRESSION_TYPE("_ClassWithThreeTypeParameters<kotlin.Int?, kotlin.Short?, kotlin.String?>"), DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>.equals(<!DEBUG_INFO_SMARTCAST!>x<!>.z)
             if (<!DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>.x != null) {
                 <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int & kotlin.Int?")!><!DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>.x<!>
             <!DEBUG_INFO_EXPRESSION_TYPE("kotlin.Int"), DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>.x<!>.equals(<!DEBUG_INFO_SMARTCAST!><!DEBUG_INFO_SMARTCAST!>x<!>.z<!>.x)
