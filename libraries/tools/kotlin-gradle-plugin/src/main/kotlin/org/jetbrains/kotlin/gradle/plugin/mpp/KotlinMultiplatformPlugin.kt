@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.plugin.*
 import org.jetbrains.kotlin.gradle.plugin.sources.DefaultLanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.utils.SingleWarningPerBuild
+import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.presetName
 
@@ -87,8 +88,6 @@ class KotlinMultiplatformPlugin(
             KotlinMetadataTargetPreset(project, instantiator, fileResolver, kotlinPluginVersion),
             METADATA_TARGET_NAME
         )
-        configureSourceJars(project)
-
         configurePublishingWithMavenPublish(project)
 
         // propagate compiler plugin options to the source set language settings
@@ -187,43 +186,14 @@ class KotlinMultiplatformPlugin(
             .forEach { variant ->
                 val variantPublication = publications.create(variant.name, MavenPublication::class.java).apply {
                     // do this in whenEvaluated since older Gradle versions seem to check the files in the variant eagerly:
-                    project.whenEvaluated {
-                        from(variant)
-                        (project.tasks.findByName(sourcesJarTaskName) as Jar?)?.let { sourcesJar ->
-                            artifact(sourcesJar)
-                        }
-                    }
+                    project.whenEvaluated { from(variant) }
                     (this as MavenPublicationInternal).publishWithOriginalFileName()
                     artifactId = variant.defaultArtifactId
                 }
 
                 (variant as? KotlinTargetComponentWithPublication)?.publicationDelegate = variantPublication
                 publicationConfigureActions.all { it.execute(variantPublication) }
-        }
-    }
-
-    private val KotlinTarget.sourcesJarTaskName get() = disambiguateName("sourcesJar")
-
-    private fun configureSourceJars(project: Project) = with(project.kotlinExtension as KotlinMultiplatformExtension) {
-        targets.all { target ->
-            val mainCompilation = target.compilations.findByName(KotlinCompilation.MAIN_COMPILATION_NAME)
-            // If a target has no `main` compilation (e.g. Android), don't create the source JAR
-                ?: return@all
-
-            val sourcesJar = project.tasks.create(target.sourcesJarTaskName, Jar::class.java) { sourcesJar ->
-                sourcesJar.appendix = target.targetName.toLowerCase()
-                sourcesJar.classifier = "sources"
             }
-
-            project.afterEvaluate { _ ->
-                val compiledSourceSets = mainCompilation.allKotlinSourceSets
-                compiledSourceSets.forEach { sourceSet ->
-                    sourcesJar.from(sourceSet.kotlin) { copySpec ->
-                        copySpec.into(sourceSet.name)
-                    }
-                }
-            }
-        }
     }
 
     private fun configureSourceSets(project: Project) = with(project.kotlinExtension as KotlinMultiplatformExtension) {
@@ -290,6 +260,28 @@ class KotlinMultiplatformPlugin(
                     "You can disable Gradle metadata usage during publishing and dependencies resolution by removing " +
                     "`enableFeaturePreview('GRADLE_METADATA')` from the settings.gradle file."
     }
+}
+
+internal fun sourcesJarTask(compilation: KotlinCompilation<*>, componentName: String?, artifactNameAppendix: String): Jar {
+    val project = compilation.target.project
+    val taskName = lowerCamelCaseName(componentName, "sourcesJar")
+
+    (project.tasks.findByName(taskName) as? Jar)?.let { return it }
+
+    val result = project.tasks.create(taskName, Jar::class.java) { sourcesJar ->
+        sourcesJar.appendix = artifactNameAppendix
+        sourcesJar.classifier = "sources"
+    }
+
+    project.whenEvaluated {
+        compilation.allKotlinSourceSets.forEach { sourceSet ->
+            result.from(sourceSet.kotlin) { copySpec ->
+                copySpec.into(sourceSet.name)
+            }
+        }
+    }
+
+    return result
 }
 
 internal fun compilationsBySourceSet(project: Project): Map<KotlinSourceSet, Set<KotlinCompilation<*>>> =

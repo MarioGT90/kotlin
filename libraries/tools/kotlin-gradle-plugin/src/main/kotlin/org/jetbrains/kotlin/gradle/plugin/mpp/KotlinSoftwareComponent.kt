@@ -45,6 +45,7 @@ class DefaultKotlinUsageContext(
     private val usage: Usage,
     override val dependencyConfigurationName: String,
     private val publishWithGradleMetadata: Boolean,
+    val sourcesArtifact: PublishArtifact? = null,
     private val overrideConfigurationArtifacts: Set<PublishArtifact>? = null
 ) : KotlinUsageContext {
 
@@ -72,9 +73,10 @@ class DefaultKotlinUsageContext(
         configuration.incoming.dependencyConstraints
 
     override fun getArtifacts(): Set<PublishArtifact> =
-        overrideConfigurationArtifacts ?:
-    // TODO Gradle Java plugin does that in a different way; check whether we can improve this
-        configuration.artifacts
+        (overrideConfigurationArtifacts ?:
+        // TODO Gradle Java plugin does that in a different way; check whether we can improve this
+        configuration.artifacts)
+            .plus(listOfNotNull(sourcesArtifact))
 
     override fun getAttributes(): AttributeContainer =
         HierarchyAttributeContainer(configuration.outgoing.attributes) { it != ProjectLocalConfigurations.ATTRIBUTE }
