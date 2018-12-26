@@ -385,22 +385,53 @@ private fun KtNamedDeclaration.requiresNoMarkers(
             return true
         }
         is KtParameter,
-        is KtEnumEntry -> if (document?.areAnchorsOnOneLine(this, containingClassOrObject) == true) {
-            return true
+        is KtEnumEntry -> {
+            if (document?.areAnchorsOnOneLine(this, containingClassOrObject) == true) {
+                return true
+            }
+            if (this is KtEnumEntry) {
+                val enumEntries = containingClassOrObject?.body?.enumEntries.orEmpty()
+                val previousEnumEntry = enumEntries.getOrNull(enumEntries.indexOf(this) - 1)
+                if (document?.areAnchorsOnOneLine(this, previousEnumEntry) == true) {
+                    return true
+                }
+            }
+            if (this is KtParameter && hasValOrVar()) {
+                val parameters = containingClassOrObject?.primaryConstructorParameters.orEmpty()
+                val previousParameter = parameters.getOrNull(parameters.indexOf(this) - 1)
+                if (document?.areAnchorsOnOneLine(this, previousParameter) == true) {
+                    return true
+                }
+            }
         }
     }
     return false
 }
 
 internal fun KtDeclaration.findMarkerBoundDeclarations(): List<KtNamedDeclaration> {
-    if (this !is KtClass) return emptyList()
-    val result = mutableListOf<KtNamedDeclaration>()
+    if (this !is KtClass && this !is KtParameter) return emptyList()
     val document = PsiDocumentManager.getInstance(project).getDocument(containingFile)
-    result += primaryConstructor?.valueParameters?.filter { it.hasValOrVar() && it.requiresNoMarkers(document) }.orEmpty()
-    if (this.isEnum()) {
-        result += this.body?.enumEntries?.filter { it.requiresNoMarkers(document) }.orEmpty()
+    return when (this) {
+        is KtParameter -> takeIf { hasValOrVar() }?.containingClassOrObject?.primaryConstructorParameters?.filter {
+            it !== this && it.hasValOrVar() && document?.areAnchorsOnOneLine(this, it) == true
+        }.orEmpty()
+        is KtEnumEntry -> containingClassOrObject?.body?.enumEntries?.filter {
+            it !== this && document?.areAnchorsOnOneLine(this, it) == true
+        }.orEmpty()
+        is KtClass -> {
+            val result = mutableListOf<KtNamedDeclaration>()
+            result += primaryConstructor?.valueParameters?.filter {
+                it.hasValOrVar() && document?.areAnchorsOnOneLine(this, it) == true
+            }.orEmpty()
+            if (this.isEnum()) {
+                result += this.body?.enumEntries?.filter {
+                    document?.areAnchorsOnOneLine(this, it) == true
+                }.orEmpty()
+            }
+            result
+        }
+        else -> emptyList()
     }
-    return result
 }
 
 private fun collectActualMarkers(
