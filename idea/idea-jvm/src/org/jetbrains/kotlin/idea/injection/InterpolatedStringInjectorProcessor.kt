@@ -48,63 +48,65 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
         result.add(Trinity.create(literal, injectedLanguage, range))
     }
 
-    fun suffix(i: Int): String {
-        return if (i == len - 1) {
-            injection.suffix
-        } else {
-            ""
-        }
-    }
+    fun suffix(i: Int): String = if (i == len - 1) injection.suffix else ""
 
-    var unparsable = false
-
-    var prefix = injection.prefix
-
-    var i = 0
-    while (i < len) {
-        val child = children[i]
+    tailrec fun walkChildren(children: List<PsiElement>, prefix: String, suffix: String, unparseble: Boolean): Boolean {
+        val child = children.firstOrNull() ?: return unparseble
+        val tail = children.subList(1, children.size)
         val partOffsetInParent = child.startOffsetInParent
+
+        val suffix = if (tail.isEmpty()) injection.suffix else ""
+
 
         when (child) {
             is KtLiteralStringTemplateEntry, is KtEscapeStringTemplateEntry -> {
                 // Merge all string literals into one part
-                while (true) {
-                    val nextChild = children.getOrNull(i + 1)
-                    if (nextChild is KtLiteralStringTemplateEntry || nextChild is KtEscapeStringTemplateEntry) {
-                        i++
-                    } else {
-                        break
-                    }
+//                while (true) {
+                val nextChild = children.getOrNull(1)
+                if (nextChild is KtLiteralStringTemplateEntry || nextChild is KtEscapeStringTemplateEntry) {
+                    return walkChildren(tail, prefix, suffix, unparseble)
                 }
+//                }
 
-                val lastInPart = children[i]
 
                 addInjectionRange(
-                    TextRange.create(partOffsetInParent, lastInPart.startOffsetInParent + lastInPart.textLength),
+                    TextRange.create(partOffsetInParent, child.startOffsetInParent + child.textLength),
                     prefix,
-                    suffix(i)
+                    suffix
                 )
-
-                prefix = ""
+                return walkChildren(tail, "", suffix, unparseble)
             }
 
             is KtSimpleNameStringTemplateEntry, is KtBlockStringTemplateEntry -> {
-                if (!prefix.isEmpty() || i == 0) {
+                if (!prefix.isEmpty()) {
                     // Store part with prefix before replacing it
-                    addInjectionRange(TextRange.from(partOffsetInParent, 0), prefix, suffix(i))
+                    addInjectionRange(TextRange.from(partOffsetInParent, 0), prefix, suffix)
                 }
 
-                prefix = when (child) {
+                val myUnparsable: Boolean
+                val prefix: String
+
+                when (child) {
                     is KtSimpleNameStringTemplateEntry -> {
-                        tryEvaluateConstant(child.expression) ?: run {
-                            unparsable = true
-                            child.expression?.text ?: NO_VALUE_NAME
+                        tryEvaluateConstant(child.expression).let {
+                            if (it == null) {
+                                myUnparsable = true
+                                prefix = child.expression?.text ?: NO_VALUE_NAME
+                            } else {
+                                myUnparsable = false
+                                prefix = it
+                            }
                         }
                     }
                     is KtBlockStringTemplateEntry -> {
-                        tryEvaluateConstant(child.expression) ?: run {
-                            unparsable = true
-                            NO_VALUE_NAME
+                        tryEvaluateConstant(child.expression).let {
+                            if (it == null) {
+                                myUnparsable = true
+                                prefix = NO_VALUE_NAME
+                            } else {
+                                myUnparsable = false
+                                prefix = it
+                            }
                         }
                     }
                     else -> {
@@ -112,23 +114,39 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
                     }
                 }
 
-                if (i == len - 1 && !prefix.isEmpty()) {
+                if (tail.isEmpty() && !prefix.isEmpty()) {
                     // There won't be more elements, so create part with prefix right away
-                    addInjectionRange(TextRange.from(partOffsetInParent + child.textLength, 0), prefix, suffix(i))
+                    addInjectionRange(TextRange.from(partOffsetInParent + child.textLength, 0), prefix, suffix)
                 }
+                return walkChildren(tail, prefix, suffix, unparseble || myUnparsable)
             }
 
             else -> {
-                unparsable = true
+                addInjectionRange(TextRange.create(partOffsetInParent, child.startOffsetInParent + child.textLength), prefix, suffix)
 
-                addInjectionRange(TextRange.create(partOffsetInParent, child.startOffsetInParent + child.textLength), prefix, suffix(i))
+                return walkChildren(tail, "", suffix, true)
 
-                prefix = ""
             }
         }
 
-        i++
+
     }
+
+
+    val firstChild = children.firstOrNull()
+    val unparsable = if (firstChild is KtSimpleNameStringTemplateEntry || firstChild is KtBlockStringTemplateEntry) {
+
+        // Store part with prefix before replacing it
+        addInjectionRange(
+            TextRange.from(firstChild.startOffsetInParent, 0),
+            injection.prefix,
+            if (children.size == 1) injection.suffix else ""
+        )
+
+        walkChildren(children, "", injection.suffix, false)
+    } else
+        walkChildren(children, injection.prefix, injection.suffix, false)
+
 
     return InjectionSplitResult(unparsable, result)
 }
