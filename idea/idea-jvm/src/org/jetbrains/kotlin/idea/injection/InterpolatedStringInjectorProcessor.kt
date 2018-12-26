@@ -48,6 +48,14 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
         result.add(Trinity.create(literal, injectedLanguage, range))
     }
 
+    fun suffix(i: Int): String {
+        return if (i == len - 1) {
+            injection.suffix
+        } else {
+            ""
+        }
+    }
+
     var unparsable = false
 
     var prefix = injection.prefix
@@ -57,46 +65,66 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
         val child = children[i]
         val partOffsetInParent = child.startOffsetInParent
 
-        @Suppress("IMPLICIT_CAST_TO_ANY")
-        val part = when (child) {
+        when (child) {
             is KtLiteralStringTemplateEntry, is KtEscapeStringTemplateEntry -> {
-                val partSize = children.subList(i, len).asSequence()
-                    .takeWhile { it is KtLiteralStringTemplateEntry || it is KtEscapeStringTemplateEntry }
-                    .count()
-                i += partSize - 1
-                children[i]
+                // Merge all string literals into one part
+                while (true) {
+                    val nextChild = children.getOrNull(i + 1)
+                    if (nextChild is KtLiteralStringTemplateEntry || nextChild is KtEscapeStringTemplateEntry) {
+                        i++
+                    } else {
+                        break
+                    }
+                }
+
+                val lastInPart = children[i]
+
+                addInjectionRange(
+                    TextRange.create(partOffsetInParent, lastInPart.startOffsetInParent + lastInPart.textLength),
+                    prefix,
+                    suffix(i)
+                )
+
+                prefix = ""
             }
-            is KtSimpleNameStringTemplateEntry ->
-                tryEvaluateConstant(child.expression) ?: run {
-                    unparsable = true
-                    child.expression?.text ?: NO_VALUE_NAME
+
+            is KtSimpleNameStringTemplateEntry, is KtBlockStringTemplateEntry -> {
+                if (!prefix.isEmpty() || i == 0) {
+                    // Store part with prefix before replacing it
+                    addInjectionRange(TextRange.from(partOffsetInParent, 0), prefix, suffix(i))
                 }
-            is KtBlockStringTemplateEntry ->
-                tryEvaluateConstant(child.expression) ?: run {
-                    unparsable = true
-                    NO_VALUE_NAME
+
+                prefix = when (child) {
+                    is KtSimpleNameStringTemplateEntry -> {
+                        tryEvaluateConstant(child.expression) ?: run {
+                            unparsable = true
+                            child.expression?.text ?: NO_VALUE_NAME
+                        }
+                    }
+                    is KtBlockStringTemplateEntry -> {
+                        tryEvaluateConstant(child.expression) ?: run {
+                            unparsable = true
+                            NO_VALUE_NAME
+                        }
+                    }
+                    else -> {
+                        error("Child type should be KtSimpleNameStringTemplateEntry or KtBlockStringTemplateEntry")
+                    }
                 }
+
+                if (i == len - 1 && !prefix.isEmpty()) {
+                    // There won't be more elements, so create part with prefix right away
+                    addInjectionRange(TextRange.from(partOffsetInParent + child.textLength, 0), prefix, suffix(i))
+                }
+            }
+
             else -> {
                 unparsable = true
-                child
+
+                addInjectionRange(TextRange.create(partOffsetInParent, child.startOffsetInParent + child.textLength), prefix, suffix(i))
+
+                prefix = ""
             }
-        }
-
-        val suffix = if (i == len - 1) injection.suffix else ""
-
-        if (part is PsiElement) {
-            addInjectionRange(TextRange.create(partOffsetInParent, part.startOffsetInParent + part.textLength), prefix, suffix)
-        } else {
-            if (!prefix.isEmpty() || i == 0) {
-                addInjectionRange(TextRange.from(partOffsetInParent, 0), prefix, suffix)
-            }
-        }
-
-        prefix = part as? String ?: ""
-
-        if (i == len - 1 && !prefix.isEmpty()) {
-            // Last element was interpolated part, need to add a range after it
-            addInjectionRange(TextRange.from(partOffsetInParent + child.textLength, 0), prefix, injection.suffix)
         }
 
         i++
