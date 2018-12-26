@@ -51,7 +51,6 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
     var unparsable = false
 
     var prefix = injection.prefix
-    val lastChild = children.lastOrNull()
 
     var i = 0
     while (i < len) {
@@ -87,18 +86,20 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
 
         if (part is PsiElement) {
             addInjectionRange(TextRange.create(partOffsetInParent, part.startOffsetInParent + part.textLength), prefix, suffix)
-        }
-        else if (!prefix.isEmpty() || i == 0) {
-            addInjectionRange(TextRange.from(partOffsetInParent, 0), prefix, suffix)
+        } else {
+            if (!prefix.isEmpty() || i == 0) {
+                addInjectionRange(TextRange.from(partOffsetInParent, 0), prefix, suffix)
+            }
         }
 
         prefix = part as? String ?: ""
-        i++
-    }
 
-    if (lastChild != null && !prefix.isEmpty()) {
-        // Last element was interpolated part, need to add a range after it
-        addInjectionRange(TextRange.from(lastChild.startOffsetInParent + lastChild.textLength, 0), prefix, injection.suffix)
+        if (i == len - 1 && !prefix.isEmpty()) {
+            // Last element was interpolated part, need to add a range after it
+            addInjectionRange(TextRange.from(partOffsetInParent + child.textLength, 0), prefix, injection.suffix)
+        }
+
+        i++
     }
 
     return InjectionSplitResult(unparsable, result)
