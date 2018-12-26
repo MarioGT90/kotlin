@@ -36,7 +36,6 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
     InjectorUtils.getLanguage(injection) ?: return null
 
     val children = literal.children.toList()
-    val len = children.size
 
     if (children.isEmpty()) return null
 
@@ -48,8 +47,6 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
         result.add(Trinity.create(literal, injectedLanguage, range))
     }
 
-    fun suffix(i: Int): String = if (i == len - 1) injection.suffix else ""
-
     tailrec fun walkChildren(children: List<PsiElement>, prefix: String, suffix: String, unparseble: Boolean): Boolean {
         val child = children.firstOrNull() ?: return unparseble
         val tail = children.subList(1, children.size)
@@ -60,21 +57,21 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
 
         when (child) {
             is KtLiteralStringTemplateEntry, is KtEscapeStringTemplateEntry -> {
-                // Merge all string literals into one part
-//                while (true) {
-                val nextChild = children.getOrNull(1)
-                if (nextChild is KtLiteralStringTemplateEntry || nextChild is KtEscapeStringTemplateEntry) {
-                    return walkChildren(tail, prefix, suffix, unparseble)
-                }
-//                }
 
+                val partSize = tail.asSequence()
+                    .takeWhile { it is KtLiteralStringTemplateEntry || it is KtEscapeStringTemplateEntry }
+                    .count()
 
+                val lastChild = children[partSize]
+
+                val remainingAfter = tail.subList(partSize, tail.size)
                 addInjectionRange(
-                    TextRange.create(partOffsetInParent, child.startOffsetInParent + child.textLength),
+                    TextRange.create(partOffsetInParent, lastChild.startOffsetInParent + lastChild.textLength),
                     prefix,
-                    suffix
+                    if (remainingAfter.isEmpty()) injection.suffix else suffix
                 )
-                return walkChildren(tail, "", suffix, unparseble)
+
+                return walkChildren(remainingAfter, "", suffix, unparseble)
             }
 
             is KtSimpleNameStringTemplateEntry, is KtBlockStringTemplateEntry -> {
@@ -123,12 +120,9 @@ fun splitLiteralToInjectionParts(injection: BaseInjection, literal: KtStringTemp
 
             else -> {
                 addInjectionRange(TextRange.create(partOffsetInParent, child.startOffsetInParent + child.textLength), prefix, suffix)
-
                 return walkChildren(tail, "", suffix, true)
-
             }
         }
-
 
     }
 
